@@ -1,0 +1,80 @@
+{% extends 'layout.html' %} {% block title %}Users - WebFlix{% endblock %} {%
+block content %}
+<h1>Users</h1>
+
+<!-- Add New User Form -->
+<div class="add-user-form">
+  <h2>Add New User</h2>
+  <form
+    action="{{ url_for('add_user') }}"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required />
+    </div>
+    <div class="form-group">
+      <label for="profile_pic">Profile Picture (Optional):</label>
+      <input type="file" id="profile_pic" name="profile_pic" accept="image/*" />
+      <!-- We'll add drag-and-drop later if needed -->
+    </div>
+    <button type="submit">Add User</button>
+  </form>
+</div>
+<!-- End Add New User Form -->
+
+<hr />
+{# Separator #}
+
+<h2>Existing Users</h2>
+<ul class="user-list">
+  {% for user in users %} {# Add selected-user class if this user is the
+  current_user #}
+  <li
+    class="user-list-item {% if current_user and current_user.id == user.id %}selected-user{% endif %}"
+  >
+    <div class="user-details">
+      <a
+        href="{{ url_for('set_user', user_id=user.id) }}"
+        class="user-select-link"
+      >
+        {% if user.profile_pic_url %}
+        <img
+          src="{{ user.profile_pic_url }}"
+          alt="{{ user.name }}'s profile picture"
+          width="50"
+          height="50"
+        />
+        {% else %}
+        <span class="avatar-placeholder">{{ user.name[0] }}</span>
+        {% endif %}
+      </a>
+      <a
+        href="{{ url_for('set_user', user_id=user.id) }}"
+        class="user-select-link"
+      >
+        <span class="user-list-name">{{ user.name }}</span>
+      </a>
+    </div>
+    <div class="user-actions">
+      <a
+        href="{{ url_for('edit_user_form', user_id=user.id) }}"
+        class="button button-edit"
+        >Edit</a
+      >
+      <form
+        action="{{ url_for('delete_user', user_id=user.id) }}"
+        method="post"
+        style="display: inline"
+        onsubmit="return confirm('Are you sure you want to delete {{ user.name }}?');"
+      >
+        <button type="submit" class="button button-delete">Delete</button>
+      </form>
+    </div>
+  </li>
+  {% else %}
+  <li>No users found.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

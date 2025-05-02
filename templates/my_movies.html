@@ -1,0 +1,94 @@
+{% extends 'layout.html' %} {% block title %} {% if user %}{{ user.name }}'s
+Movies{% else %}My Movies{% endif %} - WebFlix {% endblock %} {% block content
+%} {% if user %}
+<h1>{{ user.name }}'s Movies</h1>
+
+<!-- Add Movie Search Form (for user) -->
+<div class="movie-search-form">
+  <h2>Search & Add Movie to Your List</h2>
+  <form action="{{ url_for('search_movies') }}" method="get">
+    <div class="form-group">
+      <label for="search_title_user">Movie Title:</label>
+      <input type="text" id="search_title_user" name="title" required />
+    </div>
+    {# Hidden input to indicate adding to user's list #}
+    <input type="hidden" name="add_to_user" value="true" />
+    <button type="submit">Search OMDb</button>
+  </form>
+</div>
+<!-- End Add Movie Search Form -->
+
+<hr />
+
+<h2>Your Movie List</h2>
+{% if movies %}
+<ul class="movie-list">
+  {% for user_movie in movies %} {# Changed loop variable to user_movie #}
+  <li class="movie-list-item">
+    <div class="movie-poster">
+      <a href="{{ url_for('movie_detail', movie_id=user_movie.movie.id) }}">
+        {% if user_movie.movie.poster_url %}
+        <img
+          src="{{ user_movie.movie.poster_url }}"
+          alt="{{ user_movie.movie.title }} Poster"
+          height="100"
+        />
+        {% else %}
+        <span class="poster-placeholder">[No Poster]</span>
+        {% endif %}
+      </a>
+    </div>
+    <div class="movie-details">
+      <a
+        href="{{ url_for('movie_detail', movie_id=user_movie.movie.id) }}"
+        class="movie-title-link"
+      >
+        <span class="movie-title">{{ user_movie.movie.title }}</span> ({{
+        user_movie.movie.year or 'N/A' }}) </a
+      ><br />
+      <small
+        >Director: {{ user_movie.movie.director or 'N/A' }} | IMDb Rating: {{
+        user_movie.movie.imdb_rating or 'N/A' }}</small
+      ><br />
+      {# Plot removed #}
+      <div class="user-movie-actions">
+        <small
+          >Status: {{ 'Watched' if user_movie.watched else 'Not Watched'
+          }}</small
+        >
+        {# Add Toggle Watched Form/Button #}
+        <form
+          action="{{ url_for('toggle_watched', user_id=user.id, movie_id=user_movie.movie.id) }}"
+          method="post"
+          style="display: inline"
+        >
+          <button type="submit" class="button button-toggle-watch">
+            {{ 'Mark Unwatched' if user_movie.watched else 'Mark Watched' }}
+          </button>
+        </form>
+        {# Add Remove from List Form/Button #}
+        <form
+          action="{{ url_for('delete_user_movie', user_id=user.id, movie_id=user_movie.movie.id) }}"
+          method="post"
+          style="display: inline"
+        >
+          <button
+            type="submit"
+            class="button button-delete"
+            onclick="return confirm('Are you sure you want to remove this movie from your list?');"
+          >
+            Remove
+          </button>
+        </form>
+      </div>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No movies found in your list.</p>
+{% endif %} {% else %} {# This part should ideally not be reached due to the
+check in the route #}
+<h1>My Movies</h1>
+<p>Please select a user first.</p>
+{% endif %} {% endblock %}

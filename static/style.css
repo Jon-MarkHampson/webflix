@@ -1,0 +1,626 @@
+/* General Styles */
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure footer stays at the bottom */
+}
+
+main {
+  flex: 1; /* Allow main content to grow and push footer down */
+  padding: 20px;
+}
+
+/* Header Styles */
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  display: flex; /* Make header a flex container */
+  justify-content: space-between; /* Space out title and nav */
+  align-items: center; /* Vertically align items in the center */
+}
+
+header h1 {
+  margin: 0;
+}
+
+header h1 a {
+  color: rgb(255, 0, 0); /* Moved from inline style */
+  text-decoration: none; /* Moved from inline style */
+}
+
+header nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 15px; /* Add some space between nav links */
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+/* Header User Info Styles */
+header .user-info {
+  display: flex;
+  align-items: center;
+}
+
+header .header-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 8px;
+  font-size: 1em; /* Adjust font size for smaller header avatar */
+  display: inline-flex; /* Use flex to center letter */
+  justify-content: center;
+  align-items: center;
+  background-color: #ccc; /* Slightly lighter placeholder */
+  color: #333;
+}
+
+header .user-name {
+  margin-right: 15px;
+}
+
+header .logout-link,
+header .login-link {
+  color: #ddd;
+  text-decoration: none;
+}
+
+header .logout-link:hover,
+header .login-link:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Footer Styles */
+footer {
+  background-color: #f2f2f2;
+  text-align: center;
+  padding: 10px;
+  margin-top: auto; /* Push footer to the bottom */
+}
+
+/* User List Styles */
+.user-list li {
+  margin-bottom: 10px; /* Add some space between list items */
+}
+
+.user-list img,
+.user-list .avatar-placeholder {
+  vertical-align: middle;
+  margin-right: 10px;
+  border-radius: 50%; /* Make profile pics/placeholders round */
+  width: 50px; /* Ensure consistent size */
+  height: 50px;
+  display: inline-flex; /* Use flex to center letter */
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: white;
+  background-color: #aaa; /* Default background for placeholder */
+}
+
+.user-list li a {
+  margin-left: 0; /* Handled by button class or flex spacing */
+}
+
+/* Style for the links wrapping avatar and name */
+.user-select-link {
+  color: inherit; /* Inherit text color from parent */
+  text-decoration: none; /* Remove underline */
+  display: inline-flex; /* Align items nicely if needed */
+  align-items: center;
+}
+
+.user-select-link:hover {
+  /* Optional: Add a subtle hover effect if desired */
+  /* e.g., background-color: #f0f0f0; */
+}
+
+/* Style for the selected user list item */
+.user-list-item.selected-user {
+  background-color: #e7f3ff; /* Light blue background */
+  border-left: 4px solid #007bff; /* Blue left border */
+  padding-left: 6px; /* Adjust padding to account for border */
+  /* Ensure padding doesn't affect overall width if needed */
+  box-sizing: border-box;
+}
+
+/* Ensure selected state overrides default item border if any */
+.user-list-item.selected-user {
+  border-bottom: 1px solid #cce5ff; /* Match background */
+}
+.user-list-item.selected-user:last-child {
+  border-bottom: none; /* Remove bottom border for last selected item */
+}
+
+/* Flash Message Styles */
+.flash-messages {
+  padding: 0; /* Remove padding from container */
+  list-style: none; /* Remove list bullets if using ul */
+  margin-bottom: 20px;
+}
+
+.alert {
+  padding: 15px;
+  margin-bottom: 10px; /* Space between messages */
+  border: 1px solid transparent;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
+
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+
+/* Add User Form Styles */
+.add-user-form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  border: 1px solid #eee;
+}
+
+.add-user-form h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.add-user-form .form-group {
+  margin-bottom: 15px;
+}
+
+.add-user-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.add-user-form input[type="text"],
+.add-user-form input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Include padding in width */
+}
+
+.add-user-form button {
+  background-color: #5cb85c;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.add-user-form button:hover {
+  background-color: #4cae4c;
+}
+
+/* Edit User Form Styles (similar to add form) */
+.edit-user-form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  border: 1px solid #eee;
+}
+
+.edit-user-form .form-group {
+  margin-bottom: 15px;
+}
+
+.edit-user-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.edit-user-form input[type="text"],
+.edit-user-form input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.edit-user-form .current-pic {
+  margin-bottom: 10px;
+}
+
+.edit-user-form small {
+  display: block;
+  margin-top: 5px;
+  color: #666;
+}
+
+.edit-user-form .form-actions {
+  margin-top: 20px;
+}
+
+/* General Button Styling */
+.button,
+button {
+  display: inline-block;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  text-decoration: none;
+  margin-left: 5px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+button {
+  font-family: sans-serif; /* Ensure button text matches */
+}
+
+.button-cancel {
+  background-color: #aaa;
+  color: white;
+}
+.button-cancel:hover {
+  background-color: #888;
+  color: white;
+}
+
+.button-edit {
+  background-color: #f0ad4e;
+  color: white;
+}
+.button-edit:hover {
+  background-color: #ec971f;
+  color: white;
+}
+
+.button-delete {
+  background-color: #d9534f;
+  color: white;
+}
+.button-delete:hover {
+  background-color: #c9302c;
+  color: white;
+}
+
+.button-select {
+  background-color: #5bc0de;
+  color: white;
+}
+.button-select:hover {
+  background-color: #31b0d5;
+  color: white;
+}
+
+/* User List Item Layout */
+.user-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+.user-list-item:last-child {
+  border-bottom: none;
+}
+
+.user-details {
+  display: flex;
+  align-items: center;
+}
+
+.user-list-name {
+  margin-left: 10px; /* Space between avatar and name */
+}
+
+.user-actions {
+  white-space: nowrap; /* Prevent buttons from wrapping */
+}
+
+hr {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+/* Movie Search Form Styles (similar to user forms) */
+.movie-search-form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  border: 1px solid #eee;
+}
+
+.movie-search-form h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.movie-search-form .form-group {
+  margin-bottom: 15px;
+}
+
+.movie-search-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.movie-search-form input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.movie-search-form button {
+  background-color: #337ab7; /* Blue */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+}
+.movie-search-form button:hover {
+  background-color: #286090;
+}
+
+/* Search Results Styles */
+.search-results-list {
+  list-style: none;
+  padding: 0;
+}
+
+.search-results-list li {
+  /* Remove flex from li, form will handle layout */
+  padding: 15px 10px;
+  border-bottom: 1px solid #eee;
+}
+.search-results-list li:last-child {
+  border-bottom: none;
+}
+
+/* Style the form within the list item */
+.search-result-form {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Make form take full width */
+}
+
+/* Reset button styles for clickable areas */
+.clickable-poster-button,
+.clickable-title-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit; /* Inherit font styles */
+  color: inherit; /* Inherit text color */
+  cursor: pointer;
+  text-align: left; /* Align text to the left */
+  display: flex; /* Use flex for alignment within button */
+  align-items: center;
+}
+
+.clickable-poster-button {
+  margin-right: 15px; /* Space between poster and title */
+}
+
+.clickable-poster-button img {
+  vertical-align: middle; /* Ensure image aligns well */
+  height: 100px; /* Keep consistent height */
+}
+
+.clickable-title-button {
+  flex-grow: 1; /* Allow title button to take remaining space */
+}
+
+/* Optional: Add hover effect */
+.clickable-poster-button:hover,
+.clickable-title-button:hover {
+  /* Example: subtle background or opacity change */
+  opacity: 0.8;
+}
+
+.poster-placeholder {
+  display: inline-block;
+  width: 67px; /* Approx width for 100px height poster */
+  height: 100px;
+  background-color: #eee;
+  color: #999;
+  text-align: center;
+  line-height: 100px;
+  font-size: 0.8em;
+  /* margin-right: 15px; */ /* Removed, handled by button margin */
+  vertical-align: middle;
+}
+
+.result-title {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+/* Remove old result-details and result-actions styles if they only contained the elements moved into the form */
+.result-details,
+.result-actions {
+  /* These might no longer be needed if structure changed completely */
+  /* You might need to explicitly remove or comment out the old rules */
+}
+
+/* Add button-add to general button styles if needed */
+.button.button-add {
+  background-color: #5cb85c;
+  color: white;
+}
+.button.button-add:hover {
+  background-color: #4cae4c;
+}
+
+/* Movie List Styles (for all_movies and my_movies) */
+.movie-list {
+  list-style: none;
+  padding: 0;
+}
+
+.movie-list-item {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+.movie-list-item:last-child {
+  border-bottom: none;
+}
+
+.movie-poster {
+  flex-shrink: 0; /* Prevent poster area from shrinking */
+  width: 75px; /* Fixed width for poster area */
+  margin-right: 15px;
+  text-align: center; /* Center placeholder text */
+}
+
+.movie-poster img {
+  max-width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  vertical-align: middle; /* Align image nicely */
+}
+
+.poster-placeholder {
+  display: inline-block;
+  width: 67px; /* Match approx width of 100px height poster */
+  height: 100px;
+  line-height: 100px;
+  background-color: #eee;
+  color: #999;
+  font-size: 0.8em;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.movie-details {
+  flex-grow: 1; /* Allow details to take remaining space */
+}
+
+.movie-title {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.movie-details small {
+  color: #555;
+  display: block; /* Put each small line on its own line */
+  margin-top: 3px;
+}
+
+.movie-details small em {
+  color: #777; /* Slightly different color for plot */
+}
+
+/* Movie Title Link Styles */
+.movie-title-link {
+  color: inherit; /* Make link color same as text */
+  text-decoration: none;
+}
+
+.movie-title-link:hover .movie-title {
+  text-decoration: underline;
+}
+
+/* User Movie Actions Styles */
+.user-movie-actions {
+  margin-top: 10px;
+}
+
+.user-movie-actions small {
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.user-movie-actions form {
+  margin-left: 5px;
+}
+
+.button-toggle-watch {
+  background-color: #6c757d; /* Grey */
+  color: white;
+  padding: 4px 8px; /* Smaller padding */
+  font-size: 0.8em;
+}
+.button-toggle-watch:hover {
+  background-color: #5a6268;
+}
+
+/* Adjust delete button size if needed */
+.user-movie-actions .button-delete {
+  padding: 4px 8px; /* Smaller padding */
+  font-size: 0.8em;
+}
+
+/* Movie Detail Page Styles */
+.movie-detail-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px; /* Space between poster and details */
+}
+
+.movie-detail-poster img {
+  max-width: 250px; /* Limit poster size */
+  height: auto;
+}
+
+.movie-detail-poster .poster-placeholder {
+  width: 200px;
+  height: 300px;
+  line-height: 300px;
+}
+
+.movie-detail-info h1 {
+  margin-top: 0;
+}
+
+.movie-detail-info p {
+  margin: 10px 0;
+}
+
+.movie-detail-info strong {
+  margin-right: 5px;
+}

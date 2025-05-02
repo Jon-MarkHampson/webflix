@@ -1,0 +1,53 @@
+{# /Users/apollo_view/Development/Masterschool/Visual Studio Code
+Projects/MoviWeb/templates/movie_detail.html #} {% extends 'layout.html' %} {%
+block title %} {{ movie.title }} - Movie Details {% endblock %} {% block content
+%}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-4">
+      {% if movie.poster_url %}
+      <img
+        src="{{ movie.poster_url }}"
+        alt="Poster for {{ movie.title }}"
+        class="img-fluid rounded shadow-sm mb-3"
+      />
+      {% else %}
+      <div class="text-center text-muted border rounded p-5 mb-3">
+        <i class="fas fa-film fa-3x"></i>
+        <p class="mt-2">No Poster Available</p>
+      </div>
+      {% endif %}
+    </div>
+    <div class="col-md-8">
+      <h1 class="mb-3">{{ movie.title }}</h1>
+      <p><strong>Year:</strong> {{ movie.year if movie.year else 'N/A' }}</p>
+      <p>
+        <strong>Director:</strong> {{ movie.director if movie.director else
+        'N/A' }}
+      </p>
+      <p>
+        <strong>IMDb Rating:</strong> {{ movie.imdb_rating if movie.imdb_rating
+        else 'N/A' }}
+      </p>
+      <p><strong>Plot:</strong></p>
+      <p>
+        {{ movie.plot_short if movie.plot_short else 'No plot summary
+        available.' }}
+      </p>
+      <p><strong>OMDb ID:</strong> {{ movie.omdb_id }}</p>
+
+      {# Add more details or actions as needed #} {# Example: Link back to all
+      movies #}
+      <a href="{{ url_for('list_all_movies') }}" class="btn btn-secondary mt-3"
+        >Back to All Movies</a
+      >
+      {# Example: Link back to user's movies if applicable #} {% if current_user
+      %}
+      <a href="{{ url_for('list_my_movies') }}" class="btn btn-info mt-3"
+        >Back to My Movies</a
+      >
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

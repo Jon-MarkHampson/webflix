@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}WEBFLIX{% endblock %}</title>
+    <!-- Global Stylesheet -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="{{ url_for('home') }}">WEBFLIX</a>
+      </h1>
+      {# Made title a link to home #}
+      <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('list_users') }}">Users</a>
+        <a href="{{ url_for('list_all_movies') }}">All Movies</a>
+        {% if current_user %}
+          <a href="{{ url_for('list_my_movies') }}">My Movies</a>
+        {% endif %}
+      </nav>
+      <div class="user-info">
+        {# Added div to group user info/login #} {% if current_user %} {% if
+        current_user.profile_pic_url %}
+        <img
+          src="{{ current_user.profile_pic_url }}"
+          alt="{{ current_user.name }}'s avatar"
+          width="30"
+          height="30"
+          class="header-avatar"
+        />
+        {% else %}
+        <span class="avatar-placeholder header-avatar"
+          >{{ current_user.name[0] }}</span
+        >
+        {% endif %}
+        <span class="user-name">{{ current_user.name }}</span>
+        <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
+        {% else %}
+        <a href="{{ url_for('list_users') }}" class="login-link">Select User</a>
+        {# Link to user selection page #} {% endif %}
+      </div>
+    </header>
+    <main>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-messages"></div>
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer>
+      <p>&copy; {{ current_year }} Jon-Mark Hampson | WebFlix</p>
+    </footer>
+  </body>
+</html>

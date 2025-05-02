@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
+from sqlalchemy import UniqueConstraint
 
 # single shared db instance
 db = SQLAlchemy()
@@ -36,9 +37,9 @@ class Movie(db.Model):
     director = db.Column(db.String(128))
     year = db.Column(db.Integer)
     omdb_id = db.Column(db.String(32), unique=True)
-    synopsis = db.Column(db.Text)
     plot_short = db.Column(db.Text)
-    plot_full = db.Column(db.Text)
+    imdb_rating = db.Column(db.String(8))
+    poster_url = db.Column(db.String, nullable=True)  # Added poster URL field
     genres = db.relationship(
         'Genre', secondary=movie_genre, back_populates='movies')
     users = db.relationship(
