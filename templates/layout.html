@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}WEBFLIX{% endblock %}</title>
-    <!-- Global Stylesheet -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
@@ -17,12 +16,12 @@
       </h1>
       {# Made title a link to home #}
       <nav>
-        <a href="{{ url_for('home') }}">Home</a>
-        <a href="{{ url_for('list_users') }}">Users</a>
-        <a href="{{ url_for('list_all_movies') }}">All Movies</a>
         {% if current_user %}
-          <a href="{{ url_for('list_my_movies') }}">My Movies</a>
+        <a href="{{ url_for('list_my_movies') }}">My Movies</a>
+        {% else %}
+        <a href="{{ url_for('list_all_movies') }}">All Movies</a>
         {% endif %}
+        <a href="{{ url_for('add_movie_search_page') }}">Add Movie</a>
       </nav>
       <div class="user-info">
         {# Added div to group user info/login #} {% if current_user %} {% if
@@ -40,26 +39,54 @@
         >
         {% endif %}
         <span class="user-name">{{ current_user.name }}</span>
-        <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
+        <a href="{{ url_for('list_users') }}" class="logout-link"
+          >Switch User</a
+        >
         {% else %}
         <a href="{{ url_for('list_users') }}" class="login-link">Select User</a>
         {# Link to user selection page #} {% endif %}
       </div>
     </header>
     <main>
-      {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          <div class="flash-messages"></div>
-            {% for category, message in messages %}
-              <div class="alert alert-{{ category }}">{{ message }}</div>
-            {% endfor %}
-          </div>
-        {% endif %}
-      {% endwith %}
-      {% block content %}{% endblock %}
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %}
+      <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %} {% endwith %} {% block content %}{% endblock %}
     </main>
     <footer>
-      <p>&copy; {{ current_year }} Jon-Mark Hampson | WebFlix</p>
+      <p>&copy; {{ current_year }} Jon-Mark Hampson | WEBFLIX</p>
     </footer>
+
+    {# JavaScript for flash message fade-out #}
+    <script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+        const flashMessages = document.querySelectorAll(
+          ".flash-messages .alert"
+        );
+        flashMessages.forEach(function (message) {
+          // Start fade-out after 5 seconds
+          setTimeout(() => {
+            message.classList.add("fade-out");
+
+            // Optional: Remove element from DOM after transition completes
+            // This prevents it from taking up space even when invisible
+            message.addEventListener("transitionend", () => {
+              // Check if opacity transition finished (to avoid firing multiple times)
+              if (
+                event.propertyName === "opacity" &&
+                message.style.opacity === "0"
+              ) {
+                // message.remove(); // Or set display: none if you prefer
+                message.style.display = "none";
+              }
+            });
+          }, 3000); // 3000 milliseconds = 3 seconds
+        });
+      });
+    </script>
   </body>
 </html>

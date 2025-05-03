@@ -1,0 +1,37 @@
+{% extends 'layout.html' %} {% block title %}Add/Search Movies{% endblock %} {%
+block content %}
+<div class="container mt-4">
+  <h2>Search and Add Movies</h2>
+
+  {% if add_to_user and current_user %}
+  <p class="lead">
+    Search OMDb to add movies to <strong>{{ current_user.name }}'s</strong> list
+    (and the global database if new).
+  </p>
+  {% else %}
+  <p class="lead">
+    Search OMDb to add movies to the global database. Log in to add to a
+    personal list.
+  </p>
+  {% endif %}
+
+  <form action="{{ url_for('search_movies') }}" method="GET" class="mb-4">
+    <div class="input-group">
+      <input
+        type="text"
+        name="title"
+        class="form-control"
+        placeholder="Enter movie title..."
+        required
+      />
+      {# Pass the context (add_to_user) as a hidden input #}
+      <input
+        type="hidden"
+        name="add_to_user"
+        value="{{ 'true' if add_to_user else 'false' }}"
+      />
+      <button type="submit" class="button button-primary">Search OMDb</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

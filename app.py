@@ -62,6 +62,11 @@ def create_app():
         users = User.query.all()
         return render_template('users.html', users=users)
 
+    @app.route('/add_user_form')
+    def add_user_form():
+        users = User.query.all()
+        return render_template('add_user.html', users=users)
+
     @app.route('/all-movies')
     def list_all_movies():
         movies = Movie.query.all()
@@ -82,12 +87,20 @@ def create_app():
 
         # Get the list of UserMovie association objects
         user_movies = current_user.favorites
-        # movies = [um.movie for um in user_movies] # Removed this line
-
         # Pass the list of UserMovie objects to the template under the key 'movies'
+        # Remove search form logic from here
         return render_template('my_movies.html', movies=user_movies, user=current_user)
 
+    # --- Route to show the dedicated Add/Search Movie Page ---
+    @app.route('/add-movie-search')
+    def add_movie_search_page():
+        # Determine if the user is logged in to set the context for adding
+        add_to_user = 'user_id' in session
+        return render_template('add_movie_search.html', add_to_user=add_to_user)
+    # --- End Add/Search Movie Page Route ---
+
     # --- Route to show edit user form ---
+
     @app.route('/user/<int:user_id>/edit', methods=['GET'])
     def edit_user_form(user_id):
         user = User.query.get_or_404(user_id)  # Get user or return 404
@@ -165,13 +178,13 @@ def create_app():
 
         if not name:
             flash('User name is required.', 'danger')
-            return redirect(url_for('list_users'))
+            return redirect(url_for('add_user_form'))
 
         # Check if user already exists
         existing_user = User.query.filter_by(name=name).first()
         if existing_user:
             flash(f'User "{name}" already exists.', 'warning')
-            return redirect(url_for('list_users'))
+            return redirect(url_for('add_user_form'))
 
         try:
             if profile_pic_file and profile_pic_file.filename != '':
@@ -184,7 +197,7 @@ def create_app():
                 profile_pic_url = upload_result.get('secure_url')
                 if not profile_pic_url:
                     flash('Failed to upload image to Cloudinary.', 'danger')
-                    return redirect(url_for('list_users'))
+                    return redirect(url_for('add_user_form'))
 
             # Create new user
             new_user = User(name=name, profile_pic_url=profile_pic_url)
@@ -263,28 +276,37 @@ def create_app():
     @app.route('/movie/<int:movie_id>')
     def movie_detail(movie_id):
         movie = Movie.query.get_or_404(movie_id)
-        return render_template('movie_detail.html', movie=movie)
+        user_movie = None  # Initialize user_movie as None
+
+        # Check if a user is logged in
+        user_id = session.get('user_id')
+        if user_id:
+            # Try to find the specific UserMovie association for this user and movie
+            user_movie = UserMovie.query.filter_by(
+                user_id=user_id, movie_id=movie_id).first()
+
+        # Pass the movie and the specific user_movie object (if found) to the template
+        return render_template('movie_detail.html', movie=movie, user_movie=user_movie)
     # --- End Movie Detail Route ---
 
     # --- OMDb Movie Search Route ---
     @app.route('/search_movies')
     def search_movies():
         search_title = request.args.get('title')
+        # Determine the context (add to user or global) based on who initiated the search
+        # This now comes from the dedicated search page's context
         add_to_user_flag = request.args.get(
             'add_to_user', 'false').lower() == 'true'
 
         if not search_title:
             flash('Please enter a movie title to search.', 'warning')
-            # Redirect back based on context? For now, redirect home.
-            return redirect(url_for('home'))
+            # Redirect back to the search page
+            return redirect(url_for('add_movie_search_page'))
 
         if not OMDB_API_KEY:
             flash('OMDb API key is not configured. Cannot search for movies.', 'danger')
-            # Redirect back to the page the search was initiated from
-            if add_to_user_flag and session.get('user_id'):
-                return redirect(url_for('list_my_movies'))
-            else:
-                return redirect(url_for('list_all_movies'))
+            # Redirect back to the search page
+            return redirect(url_for('add_movie_search_page'))
 
         search_results = []
         error_message = None
@@ -308,11 +330,14 @@ def create_app():
 
         if error_message:
             flash(f"OMDb Search Error: {error_message}", 'danger')
+            # Optionally redirect back to search page on error, or render results page with error
+            # return redirect(url_for('add_movie_search_page'))
 
+        # Render the results page, passing the context flag
         return render_template('search_results.html',
                                results=search_results,
                                search_title=search_title,
-                               add_to_user=add_to_user_flag)
+                               add_to_user=add_to_user_flag)  # Pass the flag here
     # --- End OMDb Movie Search Route ---
 
     # --- Add Movie Route (Implementation) ---
@@ -324,6 +349,22 @@ def create_app():
         current_user_id = session.get('user_id')
         movie = None
         new_movie_added = False
+        # Get original search term for redirection
+        originating_search_title = request.form.get('search_title', '')
+
+        # Determine the redirect URL early based on the context
+        # If adding to user, redirect to user's movies, otherwise to all movies.
+        # Consider redirecting back to search results? For now, stick to lists.
+        if add_to_user_flag and current_user_id:
+            success_redirect_url = url_for('list_my_movies')
+            # Redirect back to search results with the original query on failure/info
+            failure_redirect_url = url_for(
+                'search_movies', title=originating_search_title, add_to_user='true')
+        else:
+            success_redirect_url = url_for('list_all_movies')
+            # Redirect back to search results with the original query on failure/info
+            failure_redirect_url = url_for(
+                'search_movies', title=originating_search_title, add_to_user='false')
 
         # 1. Check if movie already exists in our DB
         movie = Movie.query.filter_by(omdb_id=imdb_id).first()
@@ -333,10 +374,7 @@ def create_app():
             if not OMDB_API_KEY:
                 flash(
                     'OMDb API key is not configured. Cannot add movie details.', 'danger')
-                # Redirect back based on context
-                redirect_url = url_for(
-                    'list_my_movies') if add_to_user_flag and current_user_id else url_for('list_all_movies')
-                return redirect(redirect_url)
+                return redirect(failure_redirect_url)
 
             try:
                 params = {'i': imdb_id, 'apikey': OMDB_API_KEY,
@@ -380,17 +418,12 @@ def create_app():
                 else:
                     flash(
                         f"Error fetching details from OMDb: {data.get('Error', 'Unknown error')}", 'danger')
-                    # Redirect back
-                    redirect_url = url_for(
-                        'list_my_movies') if add_to_user_flag and current_user_id else url_for('list_all_movies')
-                    return redirect(redirect_url)
+                    return redirect(failure_redirect_url)
 
             except requests.exceptions.RequestException as e:
                 db.session.rollback()
                 flash(f"Error connecting to OMDb: {e}", 'danger')
-                redirect_url = url_for(
-                    'list_my_movies') if add_to_user_flag and current_user_id else url_for('list_all_movies')
-                return redirect(redirect_url)
+                return redirect(failure_redirect_url)
             # Catch potential unique constraint errors (e.g., omdb_id)
             except IntegrityError:
                 db.session.rollback()
@@ -400,25 +433,24 @@ def create_app():
                 movie = Movie.query.filter_by(omdb_id=imdb_id).first()
                 if not movie:  # If still not found after rollback, something else is wrong
                     flash("Could not retrieve movie after database error.", 'danger')
-                    redirect_url = url_for(
-                        'list_my_movies') if add_to_user_flag and current_user_id else url_for('list_all_movies')
-                    return redirect(redirect_url)
+                    return redirect(failure_redirect_url)
             except Exception as e:
                 db.session.rollback()
                 flash(
                     f"An unexpected error occurred while adding movie: {e}", 'danger')
-                redirect_url = url_for(
-                    'list_my_movies') if add_to_user_flag and current_user_id else url_for('list_all_movies')
-                return redirect(redirect_url)
+                return redirect(failure_redirect_url)
         else:
-            if not new_movie_added:  # Only flash if we didn't just add it
+            # Only flash if we didn't just add it and are trying to add globally
+            if not new_movie_added and not add_to_user_flag:
                 flash(
                     f'Movie "{movie.title}" already exists in the database.', 'info')
 
-        # 4. If add_to_user flag is set, add to user's list
+        # 4. If add_to_user flag is set AND user is logged in, add to user's list
         if add_to_user_flag:
             if not current_user_id:
                 flash('You must be logged in to add movies to your list.', 'warning')
+                # Redirect to login or user list? Redirecting to failure URL (search results) for now.
+                return redirect(failure_redirect_url)
             # Ensure we have a movie object (either found or newly created)
             elif movie:
                 current_user = User.query.get(current_user_id)
@@ -438,17 +470,24 @@ def create_app():
                             db.session.rollback()
                             flash(
                                 f"Error adding movie to your list: {e}", 'danger')
+                            # Redirect to failure URL on error adding to user list
+                            return redirect(failure_redirect_url)
                     else:
                         flash(
                             f'Movie "{movie.title}" is already in your list.', 'info')
                 else:
                     # Should not happen if session is valid
                     flash('Current user not found.', 'danger')
+                    # Redirect back to search on error
+                    return redirect(failure_redirect_url)
+            else:
+                # Should not happen if movie wasn't found/created correctly
+                flash('Could not find or create movie to add to your list.', 'danger')
+                # Redirect back to search on error
+                return redirect(failure_redirect_url)
 
-        # 5. Redirect back
-        redirect_url = url_for(
-            'list_my_movies') if add_to_user_flag and current_user_id else url_for('list_all_movies')
-        return redirect(redirect_url)
+        # 5. Redirect to the appropriate success page
+        return redirect(success_redirect_url)
     # --- End Add Movie Route ---
 
     @app.route('/set_user/<int:user_id>')
@@ -456,7 +495,7 @@ def create_app():
         user = User.query.get(user_id)
         if user:
             session['user_id'] = user_id
-            flash(f'User set to {user.name}.', 'success')
+            # flash(f'User set to {user.name}.', 'success')
         else:
             flash('User not found.', 'danger')
         return redirect(url_for('list_users'))
@@ -466,6 +505,57 @@ def create_app():
         session.pop('user_id', None)
         flash('You have been logged out.', 'info')
         return redirect(url_for('home'))
+
+    # --- Toggle Watched Status Route ---
+    @app.route('/user/<int:user_id>/movie/<int:movie_id>/toggle-watched', methods=['POST'])
+    def toggle_watched(user_id, movie_id):
+        user_movie = UserMovie.query.filter_by(
+            user_id=user_id, movie_id=movie_id).first()
+        if user_movie:
+            try:
+                user_movie.watched = not user_movie.watched  # Toggle the status
+                db.session.commit()
+                status = "watched" if user_movie.watched else "not watched"
+                flash(
+                    f'Movie "{user_movie.movie.title}" marked as {status}.', 'success')
+            except Exception as e:
+                db.session.rollback()
+                flash(f'Error updating watched status: {str(e)}', 'danger')
+        else:
+            flash('Movie not found in your list.',
+                  'warning')  # Corrected indentation
+
+        return redirect(url_for('list_my_movies', user_id=user_id))
+    # --- End Toggle Watched Status Route ---
+
+    # --- Delete movie from user's list Route ---
+    @app.route('/users/<int:user_id>/movies/<int:movie_id>/delete', methods=['POST'])
+    def delete_user_movie(user_id, movie_id):
+        """Remove a movie from a user's list without deleting it from the database"""
+        # Check if the movie is in the user's list
+        user_movie = UserMovie.query.filter_by(
+            user_id=user_id, movie_id=movie_id).first()
+
+        if user_movie:
+            try:
+                # Get movie title for the flash message
+                movie_title = user_movie.movie.title
+
+                # Delete the association
+                db.session.delete(user_movie)
+                db.session.commit()
+
+                flash(
+                    f'"{movie_title}" has been removed from your list.', 'success')
+            except Exception as e:
+                db.session.rollback()
+                flash(
+                    f'Error removing movie from your list: {str(e)}', 'danger')
+        else:
+            flash('This movie is not in your list.', 'warning')
+
+        # Redirect back to the user's movie list
+        return redirect(url_for('list_my_movies'))
 
     return app
 

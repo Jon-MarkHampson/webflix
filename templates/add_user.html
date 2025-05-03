@@ -1,0 +1,77 @@
+{% extends 'layout.html' %} {% block title %}Add New User - WebFlix{% endblock
+%} {% block content %}
+<h1>Add New User</h1>
+
+<!-- Add New User Form -->
+<div class="add-user-form">
+  <form
+    action="{{ url_for('add_user') }}"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" class="form-control" required />
+    </div>
+    <div class="form-group">
+      <label for="profile_pic">Profile Picture (Optional):</label>
+      <input
+        type="file"
+        id="profile_pic"
+        name="profile_pic"
+        class="form-control"
+        accept="image/*"
+      />
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="button button-add">Add User</button>
+      <a href="{{ url_for('list_users') }}" class="button button-cancel"
+        >Cancel</a
+      >
+    </div>
+  </form>
+</div>
+<!-- End Add New User Form -->
+
+<hr />
+
+<h2>Existing Users</h2>
+<ul class="user-list">
+  {% for user in users %}
+  <li
+    class="user-list-item {% if current_user and current_user.id == user.id %}selected-user{% endif %}"
+  >
+    <div class="user-details">
+      <div class="user-avatar">
+        {% if user.profile_pic_url %}
+        <img
+          src="{{ user.profile_pic_url }}"
+          alt="{{ user.name }}'s profile picture"
+          width="50"
+          height="50"
+        />
+        {% else %}
+        <span class="avatar-placeholder">{{ user.name[0] }}</span>
+        {% endif %}
+      </div>
+      <span class="user-list-name">{{ user.name }}</span>
+
+      {% if current_user and current_user.id == user.id %}
+      <span class="active-badge">Active</span>
+      {% endif %}
+    </div>
+    <div class="user-actions">
+      {% if not current_user or current_user.id != user.id %}
+      <a
+        href="{{ url_for('set_user', user_id=user.id) }}"
+        class="button button-select"
+        >Select</a
+      >
+      {% endif %}
+    </div>
+  </li>
+  {% else %}
+  <li>No users found.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

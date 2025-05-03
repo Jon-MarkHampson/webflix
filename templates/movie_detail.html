@@ -12,9 +12,8 @@ block title %} {{ movie.title }} - Movie Details {% endblock %} {% block content
         class="img-fluid rounded shadow-sm mb-3"
       />
       {% else %}
-      <div class="text-center text-muted border rounded p-5 mb-3">
-        <i class="fas fa-film fa-3x"></i>
-        <p class="mt-2">No Poster Available</p>
+      <div class="movie-detail-poster">
+        <span class="poster-placeholder">[No Poster]</span>
       </div>
       {% endif %}
     </div>
@@ -36,17 +35,59 @@ block title %} {{ movie.title }} - Movie Details {% endblock %} {% block content
       </p>
       <p><strong>OMDb ID:</strong> {{ movie.omdb_id }}</p>
 
-      {# Add more details or actions as needed #} {# Example: Link back to all
-      movies #}
-      <a href="{{ url_for('list_all_movies') }}" class="btn btn-secondary mt-3"
-        >Back to All Movies</a
-      >
-      {# Example: Link back to user's movies if applicable #} {% if current_user
-      %}
-      <a href="{{ url_for('list_my_movies') }}" class="btn btn-info mt-3"
-        >Back to My Movies</a
-      >
-      {% endif %}
+      <div class="mt-4">
+        {% if current_user %}
+        {# The user_movie object is now passed directly from the route #}
+        {% if user_movie %} {# Watched Toggle Button - only show if the movie is in the user's list #}
+        <form
+          action="{{ url_for('toggle_watched', user_id=current_user.id, movie_id=movie.id) }}"
+          method="post"
+          class="d-inline"
+        >
+          <button
+            type="submit"
+            class="button {% if user_movie.watched %}button-watched{% else %}button-not-watched{% endif %}"
+          >
+            {% if user_movie.watched %} Mark as Not Watched {% else %} Mark as
+            Watched {% endif %}
+          </button>
+        </form>
+
+        {# "Remove from My List" button - only show if the movie is in the
+        user's list #}
+        <form
+          action="{{ url_for('delete_user_movie', user_id=current_user.id, movie_id=movie.id) }}"
+          method="post"
+          class="d-inline"
+        >
+          <button
+            type="submit"
+            class="button button-warning"
+            onclick="return confirm('Are you sure you want to remove this movie from your list?');"
+          >
+            Remove from My List
+          </button>
+        </form>
+        {% else %} {# Optionally, add a button to add the movie to the list if
+        it's not there #} {# This would require a new route or modifying the
+        add_movie route #} {#
+        <p><a href="#" class="button button-success">Add to My List</a></p>
+        #} {% endif %} {% endif %} {# "Delete from Database" button - this could
+        be restricted to admins if needed #}
+        <form
+          action="{{ url_for('delete_movie', movie_id=movie.id) }}"
+          method="post"
+          class="d-inline mt-2"
+        >
+          <button
+            type="submit"
+            class="button button-danger"
+            onclick="return confirm('Are you sure you want to delete this movie from the database? This will remove it from all user lists!');"
+          >
+            Delete from Database
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

@@ -15,6 +15,7 @@ endblock %} {% block content %}
         id="name"
         name="name"
         value="{{ user.name }}"
+        class="form-control"
         required
       />
     </div>
@@ -28,24 +29,27 @@ endblock %} {% block content %}
           alt="Current profile picture"
           width="50"
           height="50"
-          style="vertical-align: middle; margin-left: 10px"
+          class="ms-2"
         />
       </div>
       {% else %}
       <p>No current profile picture.</p>
       {% endif %}
-      <label for="profile_pic" style="margin-top: 10px"
-        >Upload New (Optional):</label
-      >
-      <input type="file" id="profile_pic" name="profile_pic" accept="image/*" />
+      <label for="profile_pic" class="mt-2">Upload New (Optional):</label>
+      <input
+        type="file"
+        id="profile_pic"
+        name="profile_pic"
+        class="form-control"
+        accept="image/*"
+      />
       <small>Uploading a new picture will replace the current one.</small>
     </div>
     <div class="form-actions">
-      <button type="submit">Update User</button>
+      <button type="submit" class="button button-primary">Update User</button>
       <a href="{{ url_for('list_users') }}" class="button button-cancel"
         >Cancel</a
       >
-      {# Added button class #}
     </div>
   </form>
 </div>

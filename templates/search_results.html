@@ -19,6 +19,7 @@ search_title }}"{% endblock %} {% block content %}
         name="add_to_user"
         value="{{ add_to_user|string|lower }}"
       />
+      <input type="hidden" name="search_title" value="{{ search_title }}" />
 
       {# Clickable Poster Area #}
       <button type="submit" class="clickable-poster-button">
@@ -49,9 +50,15 @@ search_title }}"{% endblock %} {% block content %}
 </p>
 {% endif %}
 
-<p style="margin-top: 20px">
-  <a href="{{ url_for('list_all_movies') }}">Back to All Movies</a>
+<p class="mt-3">
+  <a href="{{ url_for('list_all_movies') }}" class="button button-secondary"
+    >Back to All Movies</a
+  >
 </p>
 {% if current_user %}
-<p><a href="{{ url_for('list_my_movies') }}">Back to My Movies</a></p>
+<p>
+  <a href="{{ url_for('list_my_movies') }}" class="button button-secondary"
+    >Back to My Movies</a
+  >
+</p>
 {% endif %} {% endblock %}

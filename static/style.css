@@ -1,3 +1,355 @@
+/* Color Palette Variables */
+:root {
+  /* Primary colors */
+  --color-primary: #3498db;
+  --color-primary-dark: #2980b9;
+  --color-primary-light: #e7f3ff;
+
+  /* Secondary colors */
+  --color-secondary: #5bc0de;
+  --color-secondary-dark: #31b0d5;
+  --color-secondary-light: #d9edf7;
+
+  /* Accent colors */
+  --color-accent: #f0ad4e;
+  --color-accent-dark: #ec971f;
+  --color-accent-light: #fcf8e3;
+
+  /* Success/Positive colors */
+  --color-success: #5cb85c;
+  --color-success-dark: #4cae4c;
+  --color-success-light: #dff0d8;
+
+  /* Danger/Negative colors */
+  --color-danger: #d9534f;
+  --color-danger-dark: #c9302c;
+  --color-danger-light: #f2dede;
+
+  /* Gray scale */
+  --color-black: #000;
+  --color-dark: #333;
+  --color-gray-dark: #555;
+  --color-gray: #888;
+  --color-gray-medium: #aaa;
+  --color-gray-light: #ccc;
+  --color-light: #eee;
+  --color-lighter: #f9f9f9;
+  --color-white: #fff;
+
+  /* Special colors */
+  --color-active-badge: #2ecc71;
+  --color-brand: rgb(255, 0, 0);
+
+  /* Border colors */
+  --border-color: #eee;
+  --border-color-highlight: #cce5ff;
+
+  /* Shadow */
+  --shadow-small: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* General Layout & Utilities */
+.container {
+  max-width: 1140px; /* Common container width */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100%;
+}
+
+/* Basic Grid Replacement (using Flexbox) */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -15px; /* Gutter compensation */
+  margin-right: -15px; /* Gutter compensation */
+}
+
+/* Basic Column - adjust as needed, or create specific grid layouts */
+.col {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+  padding-left: 15px; /* Gutter */
+  padding-right: 15px; /* Gutter */
+  box-sizing: border-box;
+}
+
+/* Example responsive columns (replace col-md-4, col-md-8 etc.) */
+/* Add more specific column classes if complex layouts are needed */
+.col-md-4 {
+  /* Roughly 1/3 width on medium screens and up */
+  flex: 0 0 33.3333%;
+  max-width: 33.3333%;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
+}
+
+.col-md-8 {
+  /* Roughly 2/3 width on medium screens and up */
+  flex: 0 0 66.6667%;
+  max-width: 66.6667%;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
+}
+
+/* Simple Grid for Cards (replace row-cols-*) */
+.card-grid {
+  display: grid;
+  gap: 20px; /* Replaces g-4 */
+  /* Default to 1 column, adjust with media queries */
+  grid-template-columns: repeat(1, 1fr);
+}
+
+/* Example Media Queries for Card Grid */
+@media (min-width: 768px) {
+  /* Medium devices (tablets) */
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr); /* 2 columns */
+  }
+}
+
+@media (min-width: 992px) {
+  /* Large devices (desktops) */
+  .card-grid {
+    grid-template-columns: repeat(6, 1fr); /* 3 columns */
+  }
+}
+
+/* Spacing Utilities (replace m*-*, p*-*) */
+.mt-1 {
+  margin-top: 0.25rem !important;
+}
+.mt-2 {
+  margin-top: 0.5rem !important;
+}
+.mt-3 {
+  margin-top: 1rem !important;
+}
+.mt-4 {
+  margin-top: 1.5rem !important;
+}
+.mt-5 {
+  margin-top: 3rem !important;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem !important;
+}
+.mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+.mb-5 {
+  margin-bottom: 3rem !important;
+}
+
+.ms-1 {
+  margin-left: 0.25rem !important;
+} /* ms-* for margin-start (left) */
+.ms-2 {
+  margin-left: 0.5rem !important;
+}
+.ms-3 {
+  margin-left: 1rem !important;
+}
+
+.me-1 {
+  margin-right: 0.25rem !important;
+} /* me-* for margin-end (right) */
+.me-2 {
+  margin-right: 0.5rem !important;
+}
+.me-3 {
+  margin-right: 1rem !important;
+}
+
+.p-1 {
+  padding: 0.25rem !important;
+}
+.p-2 {
+  padding: 0.5rem !important;
+}
+.p-3 {
+  padding: 1rem !important;
+}
+.p-4 {
+  padding: 1.5rem !important;
+}
+.p-5 {
+  padding: 3rem !important;
+}
+
+/* Flex Utilities (replace d-flex, align-items-*, justify-content-*) */
+.d-flex {
+  display: flex !important;
+}
+.align-items-center {
+  align-items: center !important;
+}
+.justify-content-center {
+  justify-content: center !important;
+}
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+/* Text Utilities */
+.text-center {
+  text-align: center !important;
+}
+.text-muted {
+  color: var(--color-gray) !important;
+}
+.lead {
+  font-size: 1.25rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+/* Border Utilities */
+.border {
+  border: 1px solid var(--border-color) !important;
+}
+.border-3 {
+  border-width: 3px !important;
+}
+.border-success {
+  border-color: var(--color-success) !important;
+}
+.rounded {
+  border-radius: 4px !important;
+} /* Simple rounded corners */
+.shadow-sm {
+  box-shadow: var(--shadow-small) !important;
+}
+
+/* Image Fluid */
+.container {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Form Control */
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-dark);
+  background-color: var(--color-white);
+  background-clip: padding-box;
+  border: 1px solid var(--color-gray-light);
+  border-radius: 4px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  box-sizing: border-box;
+}
+.form-control:focus {
+  color: var(--color-dark);
+  background-color: var(--color-white);
+  border-color: #86b7fe; /* Light blue focus like Bootstrap */
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); /* Focus ring */
+}
+
+/* Input Group */
+.input-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+}
+.input-group > .form-control {
+  position: relative;
+  flex: 1 1 auto;
+  width: 1%;
+  min-width: 0;
+}
+/* Style button attached to input group */
+.input-group > .button,
+.input-group > button {
+  position: relative;
+  z-index: 2;
+  margin-left: -1px; /* Overlap border */
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.input-group > .form-control:focus {
+  z-index: 3;
+}
+/* Ensure input takes up space */
+.input-group .form-control {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Card Styles */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: var(--color-white);
+  background-clip: border-box;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  box-shadow: var(--shadow-small);
+  height: 100%; /* Replaces h-100 */
+}
+
+.card-body {
+  flex: 1 1 auto;
+  padding: 0 0;
+}
+
+.card-title {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.card-text:last-child {
+  margin-bottom: 0;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  object-fit: fill; /* Stretch image to fill the container, may distort */
+  aspect-ratio: 2 / 3; /* Common movie poster aspect ratio */
+}
+
+/* Placeholder specific styles */
+.movie-poster-placeholder {
+  background-color: var(--color-light);
+  color: var(--color-gray);
+  text-align: center;
+  width: 100%;
+  aspect-ratio: 2 / 3; /* Match image aspect ratio */
+  display: flex; /* Use flex for centering */
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  border-top-right-radius: calc(4px - 1px);
+}
+.movie-poster-placeholder span {
+  font-size: 0.9em;
+}
+
 /* General Styles */
 body {
   font-family: sans-serif;
@@ -15,12 +367,15 @@ main {
 
 /* Header Styles */
 header {
-  background-color: #333;
-  color: white;
+  background-color: var(--color-dark);
+  color: var(--color-white);
   padding: 10px 20px;
   display: flex; /* Make header a flex container */
   justify-content: space-between; /* Space out title and nav */
   align-items: center; /* Vertically align items in the center */
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 header h1 {
@@ -28,12 +383,12 @@ header h1 {
 }
 
 header h1 a {
-  color: rgb(255, 0, 0); /* Moved from inline style */
+  color: var(--color-brand); /* Moved from inline style */
   text-decoration: none; /* Moved from inline style */
 }
 
 header nav a {
-  color: white;
+  color: var(--color-white);
   text-decoration: none;
   margin-left: 15px; /* Add some space between nav links */
 }
@@ -57,8 +412,8 @@ header .header-avatar {
   display: inline-flex; /* Use flex to center letter */
   justify-content: center;
   align-items: center;
-  background-color: #ccc; /* Slightly lighter placeholder */
-  color: #333;
+  background-color: var(--color-gray-light); /* Slightly lighter placeholder */
+  color: var(--color-dark);
 }
 
 header .user-name {
@@ -67,25 +422,78 @@ header .user-name {
 
 header .logout-link,
 header .login-link {
-  color: #ddd;
+  color: var(--color-light);
   text-decoration: none;
 }
 
 header .logout-link:hover,
 header .login-link:hover {
-  color: white;
+  color: var(--color-white);
   text-decoration: underline;
+}
+
+/* Current User Banner Styles */
+.current-user-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-lighter);
+  padding: 12px 20px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-small);
+  border-left: 4px solid var(--color-primary);
+}
+
+.current-user-info {
+  display: flex;
+  align-items: center;
+}
+
+.current-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 15px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+  color: var(--color-white);
+  background-color: var(--color-primary);
+}
+
+.current-user-text {
+  color: var(--color-gray-dark);
+}
+
+.button-logout {
+  background-color: var(--color-light);
+  color: var(--color-gray-dark);
+  transition: all 0.2s ease;
+}
+
+.button-logout:hover {
+  background-color: var(--color-danger);
+  color: var(--color-white);
 }
 
 /* Footer Styles */
 footer {
-  background-color: #f2f2f2;
+  background-color: var(--color-lighter);
   text-align: center;
   padding: 10px;
   margin-top: auto; /* Push footer to the bottom */
 }
 
 /* User List Styles */
+.user-list {
+  /* Add list-style: none if not already present */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 .user-list li {
   margin-bottom: 10px; /* Add some space between list items */
 }
@@ -102,8 +510,10 @@ footer {
   align-items: center;
   font-size: 1.5em;
   font-weight: bold;
-  color: white;
-  background-color: #aaa; /* Default background for placeholder */
+  color: var(--color-white);
+  background-color: var(
+    --color-gray-medium
+  ); /* Default background for placeholder */
 }
 
 .user-list li a {
@@ -125,8 +535,8 @@ footer {
 
 /* Style for the selected user list item */
 .user-list-item.selected-user {
-  background-color: #e7f3ff; /* Light blue background */
-  border-left: 4px solid #007bff; /* Blue left border */
+  background-color: var(--color-primary-light); /* Light blue background */
+  border-left: 4px solid var(--color-primary); /* Blue left border */
   padding-left: 6px; /* Adjust padding to account for border */
   /* Ensure padding doesn't affect overall width if needed */
   box-sizing: border-box;
@@ -134,7 +544,7 @@ footer {
 
 /* Ensure selected state overrides default item border if any */
 .user-list-item.selected-user {
-  border-bottom: 1px solid #cce5ff; /* Match background */
+  border-bottom: 1px solid var(--border-color-highlight); /* Match background */
 }
 .user-list-item.selected-user:last-child {
   border-bottom: none; /* Remove bottom border for last selected item */
@@ -153,45 +563,61 @@ footer {
   border: 1px solid transparent;
   border-radius: 4px;
   text-align: center;
+  /* Add transitions for fade-out */
+  opacity: 1;
+  transition: opacity 0.5s ease-out, max-height 0.5s ease-out,
+    margin 0.5s ease-out, padding 0.5s ease-out;
+  overflow: hidden; /* Needed for max-height transition */
+  max-height: 100px; /* Adjust if alerts can be taller */
+}
+
+.alert.fade-out {
+  opacity: 0;
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-width: 0; /* Optional: fade border too */
 }
 
 .alert-warning {
   color: #8a6d3b;
-  background-color: #fcf8e3;
+  background-color: var(--color-accent-light);
   border-color: #faebcc;
 }
 
 .alert-info {
   color: #31708f;
-  background-color: #d9edf7;
+  background-color: var(--color-secondary-light);
   border-color: #bce8f1;
 }
 
 .alert-success {
   color: #3c763d;
-  background-color: #dff0d8;
+  background-color: var(--color-success-light);
   border-color: #d6e9c6;
 }
 
 .alert-danger {
   color: #a94442;
-  background-color: #f2dede;
+  background-color: var(--color-danger-light);
   border-color: #ebccd1;
 }
 
 /* Add User Form Styles */
 .add-user-form {
-  background-color: #f9f9f9;
+  background-color: var(--color-lighter);
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 30px;
-  border: 1px solid #eee;
+  border: 1px solid var(--border-color);
 }
 
 .add-user-form h2 {
   margin-top: 0;
   margin-bottom: 15px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
   padding-bottom: 10px;
 }
 
@@ -207,16 +633,17 @@ footer {
 
 .add-user-form input[type="text"],
 .add-user-form input[type="file"] {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box; /* Include padding in width */
+  /* Use form-control class now */
+  /* width: 100%; */
+  /* padding: 8px; */
+  /* border: 1px solid var(--color-gray-light); */
+  /* border-radius: 4px; */
+  /* box-sizing: border-box; */
 }
 
 .add-user-form button {
-  background-color: #5cb85c;
-  color: white;
+  background-color: var(--color-success);
+  color: var(--color-white);
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
@@ -225,16 +652,16 @@ footer {
 }
 
 .add-user-form button:hover {
-  background-color: #4cae4c;
+  background-color: var(--color-success-dark);
 }
 
 /* Edit User Form Styles (similar to add form) */
 .edit-user-form {
-  background-color: #f9f9f9;
+  background-color: var(--color-lighter);
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 30px;
-  border: 1px solid #eee;
+  border: 1px solid var(--border-color);
 }
 
 .edit-user-form .form-group {
@@ -249,21 +676,27 @@ footer {
 
 .edit-user-form input[type="text"],
 .edit-user-form input[type="file"] {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+  /* Use form-control class now */
+  /* width: 100%; */
+  /* padding: 8px; */
+  /* border: 1px solid var(--color-gray-light); */
+  /* border-radius: 4px; */
+  /* box-sizing: border-box; */
 }
 
 .edit-user-form .current-pic {
   margin-bottom: 10px;
 }
 
+.edit-user-form .current-pic img {
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
 .edit-user-form small {
   display: block;
   margin-top: 5px;
-  color: #666;
+  color: var(--color-gray);
 }
 
 .edit-user-form .form-actions {
@@ -283,6 +716,8 @@ button {
   margin-left: 5px;
   vertical-align: middle;
   text-align: center;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out; /* Add transitions */
 }
 
 button {
@@ -290,39 +725,63 @@ button {
 }
 
 .button-cancel {
-  background-color: #aaa;
-  color: white;
+  background-color: var(--color-gray-medium);
+  color: var(--color-white);
 }
 .button-cancel:hover {
-  background-color: #888;
-  color: white;
+  background-color: var(--color-gray);
+  color: var(--color-white);
 }
 
 .button-edit {
-  background-color: #f0ad4e;
-  color: white;
+  background-color: var(--color-accent);
+  color: var(--color-white);
 }
 .button-edit:hover {
-  background-color: #ec971f;
-  color: white;
+  background-color: var(--color-accent-dark);
+  color: var(--color-white);
 }
 
 .button-delete {
-  background-color: #d9534f;
-  color: white;
+  background-color: var(--color-danger);
+  color: var(--color-white);
 }
 .button-delete:hover {
-  background-color: #c9302c;
-  color: white;
+  background-color: var(--color-danger-dark);
+  color: var(--color-white);
 }
 
 .button-select {
-  background-color: #5bc0de;
-  color: white;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
 }
 .button-select:hover {
-  background-color: #31b0d5;
-  color: white;
+  background-color: var(--color-secondary-dark);
+  color: var(--color-white);
+}
+
+.button-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  /* padding: 10px 15px; */ /* Defined in base button */
+  /* font-size: 1em; */ /* Defined in base button */
+  /* transition: all 0.2s ease; */ /* Defined in base button */
+}
+
+.button-primary:hover {
+  background-color: var(--color-primary-dark);
+  /* transform: translateY(-2px); */ /* Optional: remove transform */
+  /* box-shadow: var(--shadow-medium); */ /* Optional: remove shadow */
+}
+
+.button-warning {
+  /* New style for warning buttons */
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
+.button-warning:hover {
+  background-color: var(--color-accent-dark);
+  color: var(--color-white);
 }
 
 /* User List Item Layout */
@@ -331,19 +790,56 @@ button {
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  transition: all 0.2s ease;
+  border-radius: 4px;
 }
 .user-list-item:last-child {
   border-bottom: none;
 }
 
+.user-list-item.selected-user {
+  background-color: var(--color-primary-light);
+  border-left: 4px solid var(--color-primary);
+  padding-left: 16px;
+  box-shadow: var(--shadow-small);
+}
+
+.user-list-item:hover {
+  background-color: var(--color-lighter);
+}
+
 .user-details {
   display: flex;
   align-items: center;
+  flex-grow: 1;
 }
 
 .user-list-name {
   margin-left: 10px; /* Space between avatar and name */
+  font-weight: 500;
+  font-size: 1.1em;
+  color: var(--color-dark);
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.active-badge {
+  display: inline-block;
+  background-color: var(--color-active-badge);
+  color: var(--color-white);
+  font-size: 0.7em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: bold;
 }
 
 .user-actions {
@@ -354,22 +850,22 @@ hr {
   margin-top: 30px;
   margin-bottom: 30px;
   border: 0;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border-color);
 }
 
 /* Movie Search Form Styles (similar to user forms) */
 .movie-search-form {
-  background-color: #f9f9f9;
+  background-color: var(--color-lighter);
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 30px;
-  border: 1px solid #eee;
+  border: 1px solid var(--border-color);
 }
 
 .movie-search-form h2 {
   margin-top: 0;
   margin-bottom: 15px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
   padding-bottom: 10px;
 }
 
@@ -384,16 +880,17 @@ hr {
 }
 
 .movie-search-form input[type="text"] {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+  /* Use form-control class now */
+  /* width: 100%; */
+  /* padding: 8px; */
+  /* border: 1px solid var(--color-gray-light); */
+  /* border-radius: 4px; */
+  /* box-sizing: border-box; */
 }
 
 .movie-search-form button {
-  background-color: #337ab7; /* Blue */
-  color: white;
+  background-color: var(--color-primary); /* Blue */
+  color: var(--color-white);
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
@@ -401,7 +898,7 @@ hr {
   font-size: 1em;
 }
 .movie-search-form button:hover {
-  background-color: #286090;
+  background-color: var(--color-primary-dark);
 }
 
 /* Search Results Styles */
@@ -413,7 +910,7 @@ hr {
 .search-results-list li {
   /* Remove flex from li, form will handle layout */
   padding: 15px 10px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
 }
 .search-results-list li:last-child {
   border-bottom: none;
@@ -446,8 +943,8 @@ hr {
 }
 
 .clickable-poster-button img {
-  vertical-align: middle; /* Ensure image aligns well */
   height: 100px; /* Keep consistent height */
+  display: block; /* Ensure img behaves like a block */
 }
 
 .clickable-title-button {
@@ -462,37 +959,14 @@ hr {
 }
 
 .poster-placeholder {
-  display: inline-block;
+  display: flex; /* Use flex for centering */
+  align-items: center;
+  justify-content: center;
   width: 67px; /* Approx width for 100px height poster */
   height: 100px;
-  background-color: #eee;
-  color: #999;
-  text-align: center;
-  line-height: 100px;
+  background-color: var(--color-light);
+  color: var(--color-gray);
   font-size: 0.8em;
-  /* margin-right: 15px; */ /* Removed, handled by button margin */
-  vertical-align: middle;
-}
-
-.result-title {
-  font-weight: bold;
-  margin-right: 5px;
-}
-
-/* Remove old result-details and result-actions styles if they only contained the elements moved into the form */
-.result-details,
-.result-actions {
-  /* These might no longer be needed if structure changed completely */
-  /* You might need to explicitly remove or comment out the old rules */
-}
-
-/* Add button-add to general button styles if needed */
-.button.button-add {
-  background-color: #5cb85c;
-  color: white;
-}
-.button.button-add:hover {
-  background-color: #4cae4c;
 }
 
 /* Movie List Styles (for all_movies and my_movies) */
@@ -505,7 +979,7 @@ hr {
   display: flex;
   align-items: flex-start; /* Align items to the top */
   padding: 15px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
 }
 .movie-list-item:last-child {
   border-bottom: none;
@@ -521,19 +995,19 @@ hr {
 .movie-poster img {
   max-width: 100%;
   height: auto; /* Maintain aspect ratio */
-  vertical-align: middle; /* Align image nicely */
+  display: block; /* Ensure image behaves like a block */
 }
 
 .poster-placeholder {
-  display: inline-block;
+  display: flex; /* Use flex for centering */
+  align-items: center;
+  justify-content: center;
   width: 67px; /* Match approx width of 100px height poster */
   height: 100px;
   line-height: 100px;
-  background-color: #eee;
-  color: #999;
+  background-color: var(--color-light);
+  color: var(--color-gray);
   font-size: 0.8em;
-  text-align: center;
-  vertical-align: middle;
 }
 
 .movie-details {
@@ -546,13 +1020,13 @@ hr {
 }
 
 .movie-details small {
-  color: #555;
+  color: var(--color-gray-dark);
   display: block; /* Put each small line on its own line */
   margin-top: 3px;
 }
 
 .movie-details small em {
-  color: #777; /* Slightly different color for plot */
+  color: var(--color-gray); /* Slightly different color for plot */
 }
 
 /* Movie Title Link Styles */
@@ -580,19 +1054,36 @@ hr {
 }
 
 .button-toggle-watch {
-  background-color: #6c757d; /* Grey */
-  color: white;
+  background-color: var(--color-gray); /* Grey */
+  color: var(--color-white);
   padding: 4px 8px; /* Smaller padding */
   font-size: 0.8em;
 }
 .button-toggle-watch:hover {
-  background-color: #5a6268;
+  background-color: var(--color-gray-dark);
 }
 
 /* Adjust delete button size if needed */
 .user-movie-actions .button-delete {
   padding: 4px 8px; /* Smaller padding */
   font-size: 0.8em;
+}
+
+/* Watched Toggle Button Styles */
+.button-watched {
+  background-color: var(--color-success); /* Green when watched */
+  color: var(--color-white);
+}
+.button-watched:hover {
+  background-color: var(--color-success-dark);
+}
+
+.button-not-watched {
+  background-color: var(--color-gray-medium); /* Gray when not watched */
+  color: var(--color-white);
+}
+.button-not-watched:hover {
+  background-color: var(--color-gray-dark);
 }
 
 /* Movie Detail Page Styles */
@@ -605,12 +1096,15 @@ hr {
 .movie-detail-poster img {
   max-width: 250px; /* Limit poster size */
   height: auto;
+  display: block; /* Ensure block display */
 }
 
 .movie-detail-poster .poster-placeholder {
   width: 200px;
   height: 300px;
-  line-height: 300px;
+  display: flex; /* Use flex for centering */
+  align-items: center;
+  justify-content: center;
 }
 
 .movie-detail-info h1 {
@@ -623,4 +1117,94 @@ hr {
 
 .movie-detail-info strong {
   margin-right: 5px;
+}
+
+.button-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 10px 15px;
+  font-size: 1em;
+  transition: all 0.2s ease;
+}
+
+.button-primary:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+/* Form Actions Styles */
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Style for the clickable user row link */
+.user-row-link {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  padding: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.user-row-link:hover {
+  background-color: var(--color-primary-light);
+}
+
+/* User page action buttons container */
+.user-page-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+  padding: 15px;
+  border-top: 1px solid var(--border-color);
+}
+
+.user-page-actions .button {
+  min-width: 150px;
+  padding: 12px 20px;
+  font-size: 1em;
+}
+
+/* Ensure form actions buttons have consistent styling */
+.form-actions .button {
+  padding: 10px 15px;
+  font-size: 1em;
+}
+
+
+/* Adjust movie detail poster size */
+.movie-detail-poster img {
+  max-width: 250px; /* Limit poster size */
+  height: auto;
+  display: block; /* Ensure block display */
+}
+
+
+.add-user-form .form-group,
+.edit-user-form .form-group,
+.movie-search-form .form-group {
+  margin-bottom: 15px;
+}
+
+.add-user-form label,
+.edit-user-form label,
+.movie-search-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+
+
+.d-inline {
+  display: inline !important;
+}
+.d-inline-block {
+  display: inline-block !important;
 }

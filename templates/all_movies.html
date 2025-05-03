@@ -1,72 +1,31 @@
 {% extends 'layout.html' %} {% block title %}All Movies - WebFlix{% endblock %}
 {% block content %}
-<h1>All Movies</h1>
 
-<!-- Add Movie Search Form -->
-<div class="movie-search-form">
-  <h2>Search & Add Movie</h2>
-  <form action="{{ url_for('search_movies') }}" method="get">
-    <div class="form-group">
-      <label for="search_title">Movie Title:</label>
-      <input type="text" id="search_title" name="title" required />
-    </div>
-    <button type="submit">Search OMDb</button>
-  </form>
-</div>
-<!-- End Add Movie Search Form -->
-
-<hr />
-
-<h2>Movies in Database</h2>
-{% if movies %}
-<ul class="movie-list">
-  {% for movie in movies %}
-  <li class="movie-list-item">
-    <div class="movie-poster">
-      <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
-        {% if movie.poster_url %}
-        <img
-          src="{{ movie.poster_url }}"
-          alt="{{ movie.title }} Poster"
-          height="100"
-        />
-        {% else %}
-        <span class="poster-placeholder">[No Poster]</span>
-        {% endif %}
-      </a>
-    </div>
-    <div class="movie-details">
-      <a
-        href="{{ url_for('movie_detail', movie_id=movie.id) }}"
-        class="movie-title-link"
-      >
-        <span class="movie-title">{{ movie.title }}</span> ({{ movie.year or
-        'N/A' }}) </a
-      ><br />
-      <small
-        >Director: {{ movie.director or 'N/A' }} | IMDb Rating: {{
-        movie.imdb_rating or 'N/A' }}</small
-      ><br />
-      {# Plot removed #} {# Global Delete Button #}
-      <div class="global-movie-actions" style="margin-top: 5px">
-        <form
-          action="{{ url_for('delete_movie', movie_id=movie.id) }}"
-          method="post"
-          style="display: inline"
-        >
-          <button
-            type="submit"
-            class="button button-delete button-small"
-            onclick="return confirm('Are you sure you want to DELETE this movie from the entire database? This cannot be undone.');"
-          >
-            Delete Globally
-          </button>
-        </form>
+<div class="container mt-4">
+  {% if movies %}
+  <div class="card-grid">
+    {% for movie in movies %}
+    <div class="col">
+      <div class="card">
+        <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
+          {% if movie.poster_url %}
+          <img
+            src="{{ movie.poster_url }}"
+            class="card-img-top"
+            alt="{{ movie.title }} Poster"
+          />
+          {% else %}
+          <div class="card-img-top movie-poster-placeholder">
+            <span>No Poster</span>
+          </div>
+          {% endif %}
+        </a>
       </div>
     </div>
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>No movies found in the database yet.</p>
-{% endif %} {% endblock %}
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>No movies found in the database yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
