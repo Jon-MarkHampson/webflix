@@ -68,17 +68,30 @@ main {
   padding: 20px;
 }
 
-/* Header Styles */
+/* Mobile-first Header Styles */
 header {
   background-color: var(--color-dark);
   color: var(--color-white);
-  padding: 10px 20px;
-  display: flex; /* Make header a flex container */
-  justify-content: space-between; /* Space out title and nav */
-  align-items: center; /* Vertically align items in the center */
+  padding: 10px; /* mobile: taller */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   position: sticky;
   top: 0;
   z-index: 100;
+}
+header h1,
+header .user-info {
+  flex: 1 1 100%;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+header nav {
+  flex: 1 1 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }
 
 header h1 {
@@ -98,7 +111,7 @@ header h1 a:hover {
 header nav a {
   color: var(--color-white);
   text-decoration: none;
-  margin-left: 15px; /* Add some space between nav links */
+  margin: 15px; /* Add some space between nav links */
 }
 
 header nav a:hover {
@@ -132,6 +145,9 @@ header nav a:hover {
 
 /* Header User Info Styles */
 header .user-info {
+  position: absolute;
+  top: 15px; /* Align to the top */
+  right: 10px; /* Align to the right */
   display: flex;
   align-items: center;
 }
@@ -199,8 +215,6 @@ header .user-link:hover {
   width: 100%;
   margin: 0 auto; /* Center the grid */
 }
-
-
 
 /* Spacing Utilities (replace m*-*, p*-*) */
 .mt-1 {
@@ -547,7 +561,7 @@ footer {
 .user-select-link:hover {
   /* Optional: Add a subtle hover effect if desired */
   background-color: var(--color-gray);
-  }
+}
 
 /* Style for the selected user list item */
 .user-list-item.selected-user {
@@ -1114,7 +1128,6 @@ hr {
   gap: 10px;
 }
 
-
 /* User page action buttons container */
 .user-page-actions {
   display: flex;
@@ -1171,10 +1184,32 @@ a.active-nav,
   color: var(--color-brand) !important;
 }
 
-
 /* Media Queries */
 @media (min-width: 768px) {
   /* Medium devices (tablets) */
+  header {
+    flex-wrap: nowrap;
+    padding: 10px 30px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h1,
+  header .user-info {
+    flex: 0 0 auto;
+    text-align: left;
+    margin-bottom: 0;
+  }
+  header nav {
+    flex: 0 0 auto;
+    justify-content: flex-start;
+  }
+  header .user-info {
+    position: relative;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+  }
   .card-grid {
     grid-template-columns: repeat(3, 1fr); /* 3 columns */
   }
