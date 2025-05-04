@@ -1,11 +1,10 @@
 {% extends 'layout.html' %} {% block title %}All Movies - WebFlix{% endblock %}
 {% block content %}
 
-<div class="container mt-4">
+<div class="movie-grid-container">
   {% if movies %}
   <div class="card-grid">
     {% for movie in movies %}
-    <div class="col">
       <div class="card">
         <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
           {% if movie.poster_url %}
@@ -21,7 +20,6 @@
           {% endif %}
         </a>
       </div>
-    </div>
     {% endfor %}
   </div>
   {% else %}

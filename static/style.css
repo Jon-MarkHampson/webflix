@@ -49,6 +49,129 @@
   --shadow-medium: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+* {
+  box-sizing: border-box; /* Ensure padding and border are included in width/height */
+}
+
+/* General Styles */
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure footer stays at the bottom */
+}
+
+main {
+  flex: 1; /* Allow main content to grow and push footer down */
+  padding: 20px;
+}
+
+/* Header Styles */
+header {
+  background-color: var(--color-dark);
+  color: var(--color-white);
+  padding: 10px 20px;
+  display: flex; /* Make header a flex container */
+  justify-content: space-between; /* Space out title and nav */
+  align-items: center; /* Vertically align items in the center */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header h1 {
+  margin: 0;
+}
+
+header h1 a {
+  color: var(--color-brand); /* Moved from inline style */
+  text-decoration: none; /* Moved from inline style */
+}
+
+header h1 a:hover {
+  transform: translateY(-2px);
+  text-decoration: none; /* Optional hover effect */
+}
+
+header nav a {
+  color: var(--color-white);
+  text-decoration: none;
+  margin-left: 15px; /* Add some space between nav links */
+}
+
+header nav a:hover {
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+/* Navbar active link */
+header nav a.active-nav {
+  color: var(--color-brand);
+}
+
+/* Remove underline on hover and add slight translate for clickable elements */
+a,
+.button {
+  transition: transform var(--transition), color var(--transition);
+  text-decoration: none;
+}
+a:hover,
+.button:hover {
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+/* Override header nav hover */
+header nav a:hover {
+  /* No underline and slight movement */
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+/* Header User Info Styles */
+header .user-info {
+  display: flex;
+  align-items: center;
+}
+
+header .header-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 8px;
+  font-size: 1em; /* Adjust font size for smaller header avatar */
+  display: inline-flex; /* Use flex to center letter */
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-gray-light); /* Slightly lighter placeholder */
+  color: var(--color-dark);
+}
+
+header .user-name {
+  margin-right: 15px;
+}
+
+header .user-link {
+  color: var(--color-light);
+  text-decoration: none;
+}
+
+header .user-link:hover {
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.movie-grid-container {
+  margin-top: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100%;
+}
+
 /* General Layout & Utilities */
 .container {
   max-width: 1140px; /* Common container width */
@@ -67,56 +190,35 @@
   margin-right: -15px; /* Gutter compensation */
 }
 
-/* Basic Column - adjust as needed, or create specific grid layouts */
-.col {
-  flex-basis: 0;
-  flex-grow: 1;
-  max-width: 100%;
-  padding-left: 15px; /* Gutter */
-  padding-right: 15px; /* Gutter */
-  box-sizing: border-box;
-}
-
-/* Example responsive columns (replace col-md-4, col-md-8 etc.) */
-/* Add more specific column classes if complex layouts are needed */
-.col-md-4 {
-  /* Roughly 1/3 width on medium screens and up */
-  flex: 0 0 33.3333%;
-  max-width: 33.3333%;
-  padding-left: 15px;
-  padding-right: 15px;
-  box-sizing: border-box;
-}
-
-.col-md-8 {
-  /* Roughly 2/3 width on medium screens and up */
-  flex: 0 0 66.6667%;
-  max-width: 66.6667%;
-  padding-left: 15px;
-  padding-right: 15px;
-  box-sizing: border-box;
-}
-
 /* Simple Grid for Cards (replace row-cols-*) */
 .card-grid {
   display: grid;
-  gap: 20px; /* Replaces g-4 */
+  gap: 20px;
   /* Default to 1 column, adjust with media queries */
   grid-template-columns: repeat(1, 1fr);
+  width: 100%;
+  margin: 0 auto; /* Center the grid */
 }
 
 /* Example Media Queries for Card Grid */
 @media (min-width: 768px) {
   /* Medium devices (tablets) */
   .card-grid {
-    grid-template-columns: repeat(3, 1fr); /* 2 columns */
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
   }
 }
 
 @media (min-width: 992px) {
   /* Large devices (desktops) */
   .card-grid {
-    grid-template-columns: repeat(6, 1fr); /* 3 columns */
+    grid-template-columns: repeat(6, 1fr); /* 6 columns */
+  }
+}
+
+@media (min-width: 1400px) {
+  /* Extra large devices (large desktops) */
+  .card-grid {
+    grid-template-columns: repeat(9, 1fr); /* 9 columns */
   }
 }
 
@@ -189,7 +291,7 @@
   padding: 3rem !important;
 }
 
-/* Flex Utilities (replace d-flex, align-items-*, justify-content-*) */
+/* Flex Utilities */
 .d-flex {
   display: flex !important;
 }
@@ -344,92 +446,14 @@
   align-items: center;
   justify-content: center;
   border-radius: 3px;
-  border-top-right-radius: calc(4px - 1px);
 }
 .movie-poster-placeholder span {
   font-size: 0.9em;
 }
 
-/* General Styles */
-body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Ensure footer stays at the bottom */
-}
-
-main {
-  flex: 1; /* Allow main content to grow and push footer down */
-  padding: 20px;
-}
-
-/* Header Styles */
-header {
-  background-color: var(--color-dark);
-  color: var(--color-white);
-  padding: 10px 20px;
-  display: flex; /* Make header a flex container */
-  justify-content: space-between; /* Space out title and nav */
-  align-items: center; /* Vertically align items in the center */
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-header h1 {
-  margin: 0;
-}
-
-header h1 a {
-  color: var(--color-brand); /* Moved from inline style */
-  text-decoration: none; /* Moved from inline style */
-}
-
-header nav a {
-  color: var(--color-white);
-  text-decoration: none;
-  margin-left: 15px; /* Add some space between nav links */
-}
-
-header nav a:hover {
-  text-decoration: underline;
-}
-
-/* Header User Info Styles */
-header .user-info {
-  display: flex;
-  align-items: center;
-}
-
-header .header-avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  margin-right: 8px;
-  font-size: 1em; /* Adjust font size for smaller header avatar */
-  display: inline-flex; /* Use flex to center letter */
-  justify-content: center;
-  align-items: center;
-  background-color: var(--color-gray-light); /* Slightly lighter placeholder */
-  color: var(--color-dark);
-}
-
-header .user-name {
-  margin-right: 15px;
-}
-
-header .logout-link,
-header .login-link {
-  color: var(--color-light);
-  text-decoration: none;
-}
-
-header .logout-link:hover,
-header .login-link:hover {
-  color: var(--color-white);
-  text-decoration: underline;
+/* Ensure user-info links get brand color when active */
+.user-link.active-nav {
+  color: var(--color-brand) !important;
 }
 
 /* Current User Banner Styles */
@@ -487,6 +511,18 @@ footer {
 }
 
 /* User List Styles */
+
+/* Style for the clickable user row link */
+.user-row-link {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  padding: 10px;
+  transition: background-color 0.2s ease;
+}
+
 .user-list {
   /* Add list-style: none if not already present */
   list-style: none;
@@ -530,22 +566,19 @@ footer {
 
 .user-select-link:hover {
   /* Optional: Add a subtle hover effect if desired */
-  /* e.g., background-color: #f0f0f0; */
-}
+  background-color: var(--color-gray);
+  }
 
 /* Style for the selected user list item */
 .user-list-item.selected-user {
-  background-color: var(--color-primary-light); /* Light blue background */
-  border-left: 4px solid var(--color-primary); /* Blue left border */
+  background-color: var(--color-gray-light);
+  border-left: 4px solid var(--color-brand);
   padding-left: 6px; /* Adjust padding to account for border */
   /* Ensure padding doesn't affect overall width if needed */
   box-sizing: border-box;
-}
-
-/* Ensure selected state overrides default item border if any */
-.user-list-item.selected-user {
   border-bottom: 1px solid var(--border-color-highlight); /* Match background */
 }
+
 .user-list-item.selected-user:last-child {
   border-bottom: none; /* Remove bottom border for last selected item */
 }
@@ -631,16 +664,6 @@ footer {
   font-weight: bold;
 }
 
-.add-user-form input[type="text"],
-.add-user-form input[type="file"] {
-  /* Use form-control class now */
-  /* width: 100%; */
-  /* padding: 8px; */
-  /* border: 1px solid var(--color-gray-light); */
-  /* border-radius: 4px; */
-  /* box-sizing: border-box; */
-}
-
 .add-user-form button {
   background-color: var(--color-success);
   color: var(--color-white);
@@ -672,16 +695,6 @@ footer {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
-}
-
-.edit-user-form input[type="text"],
-.edit-user-form input[type="file"] {
-  /* Use form-control class now */
-  /* width: 100%; */
-  /* padding: 8px; */
-  /* border: 1px solid var(--color-gray-light); */
-  /* border-radius: 4px; */
-  /* box-sizing: border-box; */
 }
 
 .edit-user-form .current-pic {
@@ -763,15 +776,10 @@ button {
 .button-primary {
   background-color: var(--color-primary);
   color: var(--color-white);
-  /* padding: 10px 15px; */ /* Defined in base button */
-  /* font-size: 1em; */ /* Defined in base button */
-  /* transition: all 0.2s ease; */ /* Defined in base button */
 }
 
 .button-primary:hover {
   background-color: var(--color-primary-dark);
-  /* transform: translateY(-2px); */ /* Optional: remove transform */
-  /* box-shadow: var(--shadow-medium); */ /* Optional: remove shadow */
 }
 
 .button-warning {
@@ -791,6 +799,7 @@ button {
   align-items: center;
   padding: 10px 0;
   border-bottom: 1px solid var(--border-color);
+  background-color: var(--color-light);
   position: relative;
   transition: all 0.2s ease;
   border-radius: 4px;
@@ -799,15 +808,8 @@ button {
   border-bottom: none;
 }
 
-.user-list-item.selected-user {
-  background-color: var(--color-primary-light);
-  border-left: 4px solid var(--color-primary);
-  padding-left: 16px;
-  box-shadow: var(--shadow-small);
-}
-
 .user-list-item:hover {
-  background-color: var(--color-lighter);
+  background-color: var(--color-gray);
 }
 
 .user-details {
@@ -844,6 +846,7 @@ button {
 
 .user-actions {
   white-space: nowrap; /* Prevent buttons from wrapping */
+  margin-right: 15px;
 }
 
 hr {
@@ -877,15 +880,6 @@ hr {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
-}
-
-.movie-search-form input[type="text"] {
-  /* Use form-control class now */
-  /* width: 100%; */
-  /* padding: 8px; */
-  /* border: 1px solid var(--color-gray-light); */
-  /* border-radius: 4px; */
-  /* box-sizing: border-box; */
 }
 
 .movie-search-form button {
@@ -1140,20 +1134,6 @@ hr {
   gap: 10px;
 }
 
-/* Style for the clickable user row link */
-.user-row-link {
-  color: inherit;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  padding: 10px;
-  transition: background-color 0.2s ease;
-}
-
-.user-row-link:hover {
-  background-color: var(--color-primary-light);
-}
 
 /* User page action buttons container */
 .user-page-actions {
@@ -1177,14 +1157,12 @@ hr {
   font-size: 1em;
 }
 
-
 /* Adjust movie detail poster size */
 .movie-detail-poster img {
   max-width: 250px; /* Limit poster size */
   height: auto;
   display: block; /* Ensure block display */
 }
-
 
 .add-user-form .form-group,
 .edit-user-form .form-group,
@@ -1200,11 +1178,15 @@ hr {
   font-weight: bold;
 }
 
-
-
 .d-inline {
   display: inline !important;
 }
 .d-inline-block {
   display: inline-block !important;
+}
+
+/* Highlight any active-nav link in brand color */
+a.active-nav,
+.active-nav {
+  color: var(--color-brand) !important;
 }

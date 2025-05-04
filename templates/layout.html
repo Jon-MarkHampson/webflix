@@ -17,11 +17,37 @@
       {# Made title a link to home #}
       <nav>
         {% if current_user %}
-        <a href="{{ url_for('list_my_movies') }}">My Movies</a>
+        <a
+          href="{{ url_for('list_my_movies') }}"
+          class="{% if request.endpoint == 'list_my_movies' %}active-nav{% endif %}"
+          >My Movies</a
+        >
+
         {% else %}
-        <a href="{{ url_for('list_all_movies') }}">All Movies</a>
+        <a
+          href="{{ url_for('list_all_movies') }}"
+          class="{% if request.endpoint == 'list_all_movies' %}active-nav{% endif %}"
+          >All Movies</a
+        >
         {% endif %}
-        <a href="{{ url_for('add_movie_search_page') }}">Add Movie</a>
+        <a
+          href="{{ url_for('add_movie_search_page') }}"
+          class="{% if request.endpoint in ['add_movie_search_page', 'search_movies', 'search_results'] %}active-nav{% endif %}"
+          >Add Movie</a
+        >
+        {% if current_user %}
+        <a
+          href="{{ url_for('list_users') }}"
+          class="user-link {% if request.endpoint == 'list_users' %}active-nav{% endif %}"
+          >Switch User</a
+        >
+        {% else %}
+        <a
+          href="{{ url_for('list_users') }}"
+          class="user-link {% if request.endpoint == 'list_users' %}active-nav{% endif %}"
+          >Select User</a
+        >
+        {% endif %}
       </nav>
       <div class="user-info">
         {# Added div to group user info/login #} {% if current_user %} {% if
@@ -39,12 +65,8 @@
         >
         {% endif %}
         <span class="user-name">{{ current_user.name }}</span>
-        <a href="{{ url_for('list_users') }}" class="logout-link"
-          >Switch User</a
-        >
-        {% else %}
-        <a href="{{ url_for('list_users') }}" class="login-link">Select User</a>
-        {# Link to user selection page #} {% endif %}
+
+        {% endif %}
       </div>
     </header>
     <main>

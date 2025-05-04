@@ -1,30 +1,30 @@
-{% extends 'layout.html' %} {% block title %}{{ user.name }}'s Movies{% endblock
-%} {% block content %}
-<div class="container mt-4">
+{% extends 'layout.html' %} {% block title %}{{ user.name }}'s Movies{% endblock %} {% block content %}
+<div class="movie-grid-container">
   {% if movies %}
   <div class="card-grid">
-    {# Loop through UserMovie association objects #} {% for user_movie in
-    movies%} {% set movie = user_movie.movie %} {# Get the actual Movie object
-    #}
-    <div class="col">
-      <div
-        class="card {% if user_movie.watched %}border border-success border-3{% endif %}"
-      >
-        <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
-          {% if movie.poster_url %}
-          <img
-            src="{{ movie.poster_url }}"
-            class="card-img-top"
-            alt="{{ movie.title }} Poster"
-          />
-          {% else %}
-          <div class="card-img-top movie-poster-placeholder">
-            <span>No Poster</span>
-          </div>
-          {% endif %}
-        </a>
-      </div>
+    {# Loop through UserMovie association objects #}
+    {% for user_movie in movies%}
+    {% set movie = user_movie.movie %}
+    {# Get the actual Movie object #}
+
+    <div
+      class="card {% if user_movie.watched %}border border-success border-3{% endif %}"
+    >
+      <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
+        {% if movie.poster_url %}
+        <img
+          src="{{ movie.poster_url }}"
+          class="card-img-top"
+          alt="{{ movie.title }} Poster"
+        />
+        {% else %}
+        <div class="card-img-top movie-poster-placeholder">
+          <span>No Poster</span>
+        </div>
+        {% endif %}
+      </a>
     </div>
+
     {% endfor %}
   </div>
   {% else %}
