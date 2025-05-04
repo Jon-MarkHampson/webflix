@@ -42,7 +42,7 @@
 
   /* Border colors */
   --border-color: #eee;
-  --border-color-highlight: #cce5ff;
+  --border-color-highlight: #ffe5e5;
 
   /* Shadow */
   --shadow-small: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -200,27 +200,7 @@ header .user-link:hover {
   margin: 0 auto; /* Center the grid */
 }
 
-/* Example Media Queries for Card Grid */
-@media (min-width: 768px) {
-  /* Medium devices (tablets) */
-  .card-grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 columns */
-  }
-}
 
-@media (min-width: 992px) {
-  /* Large devices (desktops) */
-  .card-grid {
-    grid-template-columns: repeat(6, 1fr); /* 6 columns */
-  }
-}
-
-@media (min-width: 1400px) {
-  /* Extra large devices (large desktops) */
-  .card-grid {
-    grid-template-columns: repeat(9, 1fr); /* 9 columns */
-  }
-}
 
 /* Spacing Utilities (replace m*-*, p*-*) */
 .mt-1 {
@@ -492,13 +472,13 @@ header .user-link:hover {
 }
 
 .button-logout {
-  background-color: var(--color-light);
-  color: var(--color-gray-dark);
+  background-color: var(--color-danger);
+  color: var(--color-white);
   transition: all 0.2s ease;
 }
 
 .button-logout:hover {
-  background-color: var(--color-danger);
+  background-color: var(--color-danger-dark);
   color: var(--color-white);
 }
 
@@ -1189,4 +1169,27 @@ hr {
 a.active-nav,
 .active-nav {
   color: var(--color-brand) !important;
+}
+
+
+/* Media Queries */
+@media (min-width: 768px) {
+  /* Medium devices (tablets) */
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  }
+}
+
+@media (min-width: 992px) {
+  /* Large devices (desktops) */
+  .card-grid {
+    grid-template-columns: repeat(6, 1fr); /* 6 columns */
+  }
+}
+
+@media (min-width: 1400px) {
+  /* Extra large devices (large desktops) */
+  .card-grid {
+    grid-template-columns: repeat(9, 1fr); /* 9 columns */
+  }
 }
