@@ -1,15 +1,15 @@
 import os
-from flask import Flask, render_template, session, redirect, url_for, flash, request
-from models import db, User, Movie, UserMovie  # Added UserMovie
+from flask import Flask, jsonify, render_template, session, redirect, url_for, flash, request
+from models import db, User, Movie, UserMovie
 import datetime
 import cloudinary
 import cloudinary.uploader
-import cloudinary.api
 from dotenv import load_dotenv
-import requests  # Add requests import
-from sqlalchemy.exc import IntegrityError  # Import IntegrityError
+import requests
+from sqlalchemy.exc import IntegrityError
+from api.api import api
 
-load_dotenv()  # Load variables from .env file into environment
+load_dotenv()
 
 
 def create_app():
@@ -17,6 +17,7 @@ def create_app():
     db_path = os.path.join(BASE_DIR, 'data', 'webflix.db')
 
     app = Flask(__name__)
+    app.register_blueprint(api, url_prefix='/api')
     app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.urandom(24)

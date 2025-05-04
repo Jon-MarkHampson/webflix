@@ -202,6 +202,7 @@ header .user-link:hover {
 .row {
   display: flex;
   flex-wrap: wrap;
+  gap: 20px;
   margin-left: -15px; /* Gutter compensation */
   margin-right: -15px; /* Gutter compensation */
 }
@@ -776,6 +777,17 @@ button {
   background-color: var(--color-primary-dark);
 }
 
+.button-search {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.button-search:hover {
+  transform: none;
+  background-color: var(--color-primary-dark);
+  color: var(--color-white);
+}
+
 .button-warning {
   /* New style for warning buttons */
   background-color: var(--color-accent);
@@ -783,6 +795,15 @@ button {
 }
 .button-warning:hover {
   background-color: var(--color-accent-dark);
+  color: var(--color-white);
+}
+
+.button-danger {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+}
+.button-danger:hover {
+  background-color: var(--color-danger-dark);
   color: var(--color-white);
 }
 
@@ -1182,6 +1203,18 @@ hr {
 a.active-nav,
 .active-nav {
   color: var(--color-brand) !important;
+}
+
+.movie-detail-text-wrapper {
+  padding: 10px;
+  background-color: var(--color-lighter);
+  border-radius: 8px;
+  box-shadow: var(--shadow-small);
+
+}
+
+.movie-detail-poster-wrapper {
+  padding: 10px;
 }
 
 /* Media Queries */

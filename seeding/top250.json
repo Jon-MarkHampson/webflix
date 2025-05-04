@@ -1,0 +1,752 @@
+[
+  {
+    "title": "The Shawshank Redemption"
+  },
+  {
+    "title": "The Godfather"
+  },
+  {
+    "title": "The Dark Knight"
+  },
+  {
+    "title": "The Godfather Part II"
+  },
+  {
+    "title": "12 Angry Men"
+  },
+  {
+    "title": "The Lord of the Rings: The Return of the King"
+  },
+  {
+    "title": "Schindler's List"
+  },
+  {
+    "title": "Pulp Fiction"
+  },
+  {
+    "title": "The Lord of the Rings: The Fellowship of the Ring"
+  },
+  {
+    "title": "The Good, the Bad and the Ugly"
+  },
+  {
+    "title": "Forrest Gump"
+  },
+  {
+    "title": "The Lord of the Rings: The Two Towers"
+  },
+  {
+    "title": "Fight Club"
+  },
+  {
+    "title": "Inception"
+  },
+  {
+    "title": "Star Wars: Episode V - The Empire Strikes Back"
+  },
+  {
+    "title": "The Matrix"
+  },
+  {
+    "title": "GoodFellas"
+  },
+  {
+    "title": "Interstellar"
+  },
+  {
+    "title": "One Flew Over the Cuckoo's Nest"
+  },
+  {
+    "title": "Seven"
+  },
+  {
+    "title": "It's a Wonderful Life"
+  },
+  {
+    "title": "The Silence of the Lambs"
+  },
+  {
+    "title": "Seven Samurai"
+  },
+  {
+    "title": "Saving Private Ryan"
+  },
+  {
+    "title": "City of God"
+  },
+  {
+    "title": "The Green Mile"
+  },
+  {
+    "title": "Life Is Beautiful"
+  },
+  {
+    "title": "Terminator 2: Judgment Day"
+  },
+  {
+    "title": "Star Wars: Episode IV - A New Hope"
+  },
+  {
+    "title": "Back to the Future"
+  },
+  {
+    "title": "Spirited Away"
+  },
+  {
+    "title": "The Pianist"
+  },
+  {
+    "title": "Gladiator"
+  },
+  {
+    "title": "Parasite"
+  },
+  {
+    "title": "Psycho"
+  },
+  {
+    "title": "The Lion King"
+  },
+  {
+    "title": "Grave of the Fireflies"
+  },
+  {
+    "title": "The Departed"
+  },
+  {
+    "title": "Whiplash"
+  },
+  {
+    "title": "Harakiri"
+  },
+  {
+    "title": "American History X"
+  },
+  {
+    "title": "The Prestige"
+  },
+  {
+    "title": "Leon"
+  },
+  {
+    "title": "Spider-Man: Across the Spider-Verse"
+  },
+  {
+    "title": "Casablanca"
+  },
+  {
+    "title": "The Usual Suspects"
+  },
+  {
+    "title": "Untouchable"
+  },
+  {
+    "title": "Cinema Paradiso"
+  },
+  {
+    "title": "Alien"
+  },
+  {
+    "title": "Modern Times"
+  },
+  {
+    "title": "Rear Window"
+  },
+  {
+    "title": "Once Upon a Time in the West"
+  },
+  {
+    "title": "Django Unchained"
+  },
+  {
+    "title": "City Lights"
+  },
+  {
+    "title": "Apocalypse Now"
+  },
+  {
+    "title": "Dune: Part Two"
+  },
+  {
+    "title": "WALL·E"
+  },
+  {
+    "title": "Memento"
+  },
+  {
+    "title": "Raiders of the Lost Ark"
+  },
+  {
+    "title": "The Lives of Others"
+  },
+  {
+    "title": "Avengers: Infinity War"
+  },
+  {
+    "title": "Sunset Blvd."
+  },
+  {
+    "title": "Spider-Man: Into the Spider-Verse"
+  },
+  {
+    "title": "Witness for the Prosecution"
+  },
+  {
+    "title": "Paths of Glory"
+  },
+  {
+    "title": "The Shining"
+  },
+  {
+    "title": "The Great Dictator"
+  },
+  {
+    "title": "12th Fail"
+  },
+  {
+    "title": "Aliens"
+  },
+  {
+    "title": "Inglourious Basterds"
+  },
+  {
+    "title": "The Dark Knight Rises"
+  },
+  {
+    "title": "Coco"
+  },
+  {
+    "title": "Amadeus"
+  },
+  {
+    "title": "Toy Story"
+  },
+  {
+    "title": "Avengers: Endgame"
+  },
+  {
+    "title": "Good Will Hunting"
+  },
+  {
+    "title": "Oldboy"
+  },
+  {
+    "title": "Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb"
+  },
+  {
+    "title": "Das Boot"
+  },
+  {
+    "title": "American Beauty"
+  },
+  {
+    "title": "Braveheart"
+  },
+  {
+    "title": "Princess Mononoke"
+  },
+  {
+    "title": "Your Name."
+  },
+  {
+    "title": "High and Low"
+  },
+  {
+    "title": "3 Idiots"
+  },
+  {
+    "title": "Joker"
+  },
+  {
+    "title": "Once Upon a Time in America"
+  },
+  {
+    "title": "Capernaum"
+  },
+  {
+    "title": "Singin' in the Rain"
+  },
+  {
+    "title": "The Chaos Class Failed the Class"
+  },
+  {
+    "title": "Come and See"
+  },
+  {
+    "title": "Requiem for a Dream"
+  },
+  {
+    "title": "Toy Story 3"
+  },
+  {
+    "title": "Star Wars: Episode VI - Return of the Jedi"
+  },
+  {
+    "title": "The Hunt"
+  },
+  {
+    "title": "Ikiru"
+  },
+  {
+    "title": "Eternal Sunshine of the Spotless Mind"
+  },
+  {
+    "title": "2001: A Space Odyssey"
+  },
+  {
+    "title": "Reservoir Dogs"
+  },
+  {
+    "title": "Incendies"
+  },
+  {
+    "title": "The Apartment"
+  },
+  {
+    "title": "Lawrence of Arabia"
+  },
+  {
+    "title": "Scarface"
+  },
+  {
+    "title": "Double Indemnity"
+  },
+  {
+    "title": "Heat"
+  },
+  {
+    "title": "North by Northwest"
+  },
+  {
+    "title": "Up"
+  },
+  {
+    "title": "Citizen Kane"
+  },
+  {
+    "title": "M"
+  },
+  {
+    "title": "Full Metal Jacket"
+  },
+  {
+    "title": "Vertigo"
+  },
+  {
+    "title": "Amélie"
+  },
+  {
+    "title": "A Separation"
+  },
+  {
+    "title": "To Kill a Mockingbird"
+  },
+  {
+    "title": "A Clockwork Orange"
+  },
+  {
+    "title": "Like Stars on Earth"
+  },
+  {
+    "title": "Die Hard"
+  },
+  {
+    "title": "The Sting"
+  },
+  {
+    "title": "Indiana Jones and the Last Crusade"
+  },
+  {
+    "title": "Oppenheimer"
+  },
+  {
+    "title": "Metropolis"
+  },
+  {
+    "title": "Snatch"
+  },
+  {
+    "title": "1917"
+  },
+  {
+    "title": "L.A. Confidential"
+  },
+  {
+    "title": "Bicycle Thieves"
+  },
+  {
+    "title": "Downfall"
+  },
+  {
+    "title": "Dangal"
+  },
+  {
+    "title": "The Wolf of Wall Street"
+  },
+  {
+    "title": "Hamilton"
+  },
+  {
+    "title": "Taxi Driver"
+  },
+  {
+    "title": "Green Book"
+  },
+  {
+    "title": "Batman Begins"
+  },
+  {
+    "title": "For a Few Dollars More"
+  },
+  {
+    "title": "The Truman Show"
+  },
+  {
+    "title": "Judgment at Nuremberg"
+  },
+  {
+    "title": "Some Like It Hot"
+  },
+  {
+    "title": "Shutter Island"
+  },
+  {
+    "title": "The Kid"
+  },
+  {
+    "title": "The Father"
+  },
+  {
+    "title": "All About Eve"
+  },
+  {
+    "title": "Jurassic Park"
+  },
+  {
+    "title": "There Will Be Blood"
+  },
+  {
+    "title": "Casino"
+  },
+  {
+    "title": "The Sixth Sense"
+  },
+  {
+    "title": "Ran"
+  },
+  {
+    "title": "Top Gun: Maverick"
+  },
+  {
+    "title": "No Country for Old Men"
+  },
+  {
+    "title": "The Thing"
+  },
+  {
+    "title": "Pan's Labyrinth"
+  },
+  {
+    "title": "Unforgiven"
+  },
+  {
+    "title": "A Beautiful Mind"
+  },
+  {
+    "title": "Kill Bill: Vol. 1"
+  },
+  {
+    "title": "The Treasure of the Sierra Madre"
+  },
+  {
+    "title": "Prisoners"
+  },
+  {
+    "title": "Yojimbo"
+  },
+  {
+    "title": "Finding Nemo"
+  },
+  {
+    "title": "Howl's Moving Castle"
+  },
+  {
+    "title": "The Great Escape"
+  },
+  {
+    "title": "Monty Python and the Holy Grail"
+  },
+  {
+    "title": "The Elephant Man"
+  },
+  {
+    "title": "Dial M for Murder"
+  },
+  {
+    "title": "Gone with the Wind"
+  },
+  {
+    "title": "Klaus"
+  },
+  {
+    "title": "Rashomon"
+  },
+  {
+    "title": "Chinatown"
+  },
+  {
+    "title": "The Secret in Their Eyes"
+  },
+  {
+    "title": "Lock, Stock and Two Smoking Barrels"
+  },
+  {
+    "title": "V for Vendetta"
+  },
+  {
+    "title": "Inside Out"
+  },
+  {
+    "title": "Three Billboards Outside Ebbing, Missouri"
+  },
+  {
+    "title": "The Bridge on the River Kwai"
+  },
+  {
+    "title": "Trainspotting"
+  },
+  {
+    "title": "Catch Me If You Can"
+  },
+  {
+    "title": "Raging Bull"
+  },
+  {
+    "title": "The Wild Robot"
+  },
+  {
+    "title": "Fargo"
+  },
+  {
+    "title": "Warrior"
+  },
+  {
+    "title": "Harry Potter and the Deathly Hallows: Part 2"
+  },
+  {
+    "title": "Gran Torino"
+  },
+  {
+    "title": "Million Dollar Baby"
+  },
+  {
+    "title": "Ben-Hur"
+  },
+  {
+    "title": "Mad Max: Fury Road"
+  },
+  {
+    "title": "My Neighbour Totoro"
+  },
+  {
+    "title": "Spider-Man: No Way Home"
+  },
+  {
+    "title": "Barry Lyndon"
+  },
+  {
+    "title": "Dead Poets Society"
+  },
+  {
+    "title": "Children of Heaven"
+  },
+  {
+    "title": "12 Years a Slave"
+  },
+  {
+    "title": "Before Sunrise"
+  },
+  {
+    "title": "The Grand Budapest Hotel"
+  },
+  {
+    "title": "Blade Runner"
+  },
+  {
+    "title": "Hacksaw Ridge"
+  },
+  {
+    "title": "Gone Girl"
+  },
+  {
+    "title": "Memories of Murder"
+  },
+  {
+    "title": "Ratatouille"
+  },
+  {
+    "title": "Monsters, Inc."
+  },
+  {
+    "title": "In the Name of the Father"
+  },
+  {
+    "title": "How to Train Your Dragon"
+  },
+  {
+    "title": "The Gold Rush"
+  },
+  {
+    "title": "Wild Tales"
+  },
+  {
+    "title": "Jaws"
+  },
+  {
+    "title": "Sherlock Jr."
+  },
+  {
+    "title": "Mary and Max"
+  },
+  {
+    "title": "The Deer Hunter"
+  },
+  {
+    "title": "Le Mans '66"
+  },
+  {
+    "title": "The General"
+  },
+  {
+    "title": "The Wages of Fear"
+  },
+  {
+    "title": "On the Waterfront"
+  },
+  {
+    "title": "Mr. Smith Goes to Washington"
+  },
+  {
+    "title": "Wild Strawberries"
+  },
+  {
+    "title": "Logan"
+  },
+  {
+    "title": "Rocky"
+  },
+  {
+    "title": "The Third Man"
+  },
+  {
+    "title": "I'm Still Here"
+  },
+  {
+    "title": "Tokyo Story"
+  },
+  {
+    "title": "Spotlight"
+  },
+  {
+    "title": "The Big Lebowski"
+  },
+  {
+    "title": "The Terminator"
+  },
+  {
+    "title": "Maharaja"
+  },
+  {
+    "title": "The Seventh Seal"
+  },
+  {
+    "title": "Pirates of the Caribbean: The Curse of the Black Pearl"
+  },
+  {
+    "title": "Room"
+  },
+  {
+    "title": "La haine"
+  },
+  {
+    "title": "Jai Bhim"
+  },
+  {
+    "title": "Hotel Rwanda"
+  },
+  {
+    "title": "Platoon"
+  },
+  {
+    "title": "Before Sunset"
+  },
+  {
+    "title": "The Best Years of Our Lives"
+  },
+  {
+    "title": "The Exorcist"
+  },
+  {
+    "title": "The Passion of Joan of Arc"
+  },
+  {
+    "title": "The Wizard of Oz"
+  },
+  {
+    "title": "The Sound of Music"
+  },
+  {
+    "title": "The Incredibles"
+  },
+  {
+    "title": "Hachi: A Dog's Tale"
+  },
+  {
+    "title": "Rush"
+  },
+  {
+    "title": "Stand by Me"
+  },
+  {
+    "title": "My Father and My Son"
+  },
+  {
+    "title": "Network"
+  },
+  {
+    "title": "The Iron Giant"
+  },
+  {
+    "title": "The Handmaiden"
+  },
+  {
+    "title": "To Be or Not to Be"
+  },
+  {
+    "title": "The Battle of Algiers"
+  },
+  {
+    "title": "A Silent Voice"
+  },
+  {
+    "title": "The Grapes of Wrath"
+  },
+  {
+    "title": "Into the Wild"
+  },
+  {
+    "title": "Groundhog Day"
+  },
+  {
+    "title": "Sinners"
+  },
+  {
+    "title": "The Help"
+  },
+  {
+    "title": "Amores perros"
+  },
+  {
+    "title": "Rebecca"
+  }
+]

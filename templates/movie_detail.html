@@ -4,7 +4,7 @@ block title %} {{ movie.title }} - Movie Details {% endblock %} {% block content
 %}
 <div class="container mt-4">
   <div class="row">
-    <div class="col-md-4">
+    <div class="movie-detail-poster-wrapper">
       {% if movie.poster_url %}
       <img
         src="{{ movie.poster_url }}"
@@ -17,8 +17,8 @@ block title %} {{ movie.title }} - Movie Details {% endblock %} {% block content
       </div>
       {% endif %}
     </div>
-    <div class="col-md-8">
-      <h1 class="mb-3">{{ movie.title }}</h1>
+    <div class="movie-detail-text-wrapper">
+      <h2>{{ movie.title }}</h2>
       <p><strong>Year:</strong> {{ movie.year if movie.year else 'N/A' }}</p>
       <p>
         <strong>Director:</strong> {{ movie.director if movie.director else
@@ -33,12 +33,12 @@ block title %} {{ movie.title }} - Movie Details {% endblock %} {% block content
         {{ movie.plot_short if movie.plot_short else 'No plot summary
         available.' }}
       </p>
-      <p><strong>OMDb ID:</strong> {{ movie.omdb_id }}</p>
+      <p><strong>IMDb ID:</strong> {{ movie.omdb_id }}</p>
 
-      <div class="mt-4">
-        {% if current_user %}
-        {# The user_movie object is now passed directly from the route #}
-        {% if user_movie %} {# Watched Toggle Button - only show if the movie is in the user's list #}
+      <div class="movie-detail-button-wrapper">
+        {% if current_user %} {# The user_movie object is now passed directly
+        from the route #} {% if user_movie %} {# Watched Toggle Button - only
+        show if the movie is in the user's list #}
         <form
           action="{{ url_for('toggle_watched', user_id=current_user.id, movie_id=movie.id) }}"
           method="post"
@@ -77,7 +77,7 @@ block title %} {{ movie.title }} - Movie Details {% endblock %} {% block content
         <form
           action="{{ url_for('delete_movie', movie_id=movie.id) }}"
           method="post"
-          class="d-inline mt-2"
+          class="d-inline"
         >
           <button
             type="submit"

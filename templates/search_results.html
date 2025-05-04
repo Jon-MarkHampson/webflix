@@ -1,64 +1,67 @@
 {% extends 'layout.html' %} {% block title %}OMDb Search Results for "{{
 search_title }}"{% endblock %} {% block content %}
-<h1>OMDb Search Results for "{{ search_title }}"</h1>
 
-{% if results %}
-<p>Click movie poster or title to add:</p>
-{# Updated instruction #}
-<ul class="search-results-list">
-  {% for movie in results %}
-  <li>
-    {# Form now wraps the clickable elements and actions #}
-    <form
-      action="{{ url_for('add_movie_from_omdb', imdb_id=movie.imdbID) }}"
-      method="post"
-      class="search-result-form"
-    >
-      <input
-        type="hidden"
-        name="add_to_user"
-        value="{{ add_to_user|string|lower }}"
-      />
-      <input type="hidden" name="search_title" value="{{ search_title }}" />
+<div class="container mt-4">
+  <h2>OMDb Search Results for "{{ search_title }}"</h2>
 
-      {# Clickable Poster Area #}
-      <button type="submit" class="clickable-poster-button">
-        {% if movie.Poster and movie.Poster != 'N/A' %}
-        <img
-          src="{{ movie.Poster }}"
-          alt="{{ movie.Title }} Poster"
-          height="100"
+  {% if results %}
+  <p>Click movie poster or title to add:</p>
+  {# Updated instruction #}
+  <ul class="search-results-list">
+    {% for movie in results %}
+    <li>
+      {# Form now wraps the clickable elements and actions #}
+      <form
+        action="{{ url_for('add_movie_from_omdb', imdb_id=movie.imdbID) }}"
+        method="post"
+        class="search-result-form"
+      >
+        <input
+          type="hidden"
+          name="add_to_user"
+          value="{{ add_to_user|string|lower }}"
         />
-        {% else %}
-        <span class="poster-placeholder">[No Poster]</span>
-        {% endif %}
-      </button>
+        <input type="hidden" name="search_title" value="{{ search_title }}" />
 
-      {# Clickable Title/Year Area #}
-      <button type="submit" class="clickable-title-button">
-        <span class="result-title">{{ movie.Title }}</span> ({{ movie.Year }})
-      </button>
+        {# Clickable Poster Area #}
+        <button type="submit" class="clickable-poster-button">
+          {% if movie.Poster and movie.Poster != 'N/A' %}
+          <img
+            src="{{ movie.Poster }}"
+            alt="{{ movie.Title }} Poster"
+            height="100"
+          />
+          {% else %}
+          <span class="poster-placeholder">[No Poster]</span>
+          {% endif %}
+        </button>
 
-      {# Removed the separate [Add] button/div #}
-    </form>
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>
-  No movies found matching "{{ search_title }}". Try a different search term.
-</p>
-{% endif %}
+        {# Clickable Title/Year Area #}
+        <button type="submit" class="clickable-title-button">
+          <span class="result-title">{{ movie.Title }}</span> ({{ movie.Year }})
+        </button>
 
-<p class="mt-3">
-  <a href="{{ url_for('list_all_movies') }}" class="button button-secondary"
-    >Back to All Movies</a
-  >
-</p>
-{% if current_user %}
-<p>
-  <a href="{{ url_for('list_my_movies') }}" class="button button-secondary"
-    >Back to My Movies</a
-  >
-</p>
+        {# Removed the separate [Add] button/div #}
+      </form>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>
+    No movies found matching "{{ search_title }}". Try a different search term.
+  </p>
+  {% endif %}
+
+  <p class="mt-3">
+    <a href="{{ url_for('list_all_movies') }}" class="button button-secondary"
+      >Back to All Movies</a
+    >
+  </p>
+  {% if current_user %}
+  <p>
+    <a href="{{ url_for('list_my_movies') }}" class="button button-secondary"
+      >Back to My Movies</a
+    >
+  </p>
+</div>
 {% endif %} {% endblock %}
