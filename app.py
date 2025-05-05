@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, render_template, session, redirect, url_for, flash, request
+from flask import Flask, render_template, session, redirect, url_for, flash, request
 from models import db, User, Movie, UserMovie, Genre
 import datetime
 import cloudinary
@@ -19,7 +19,8 @@ def create_app():
 
     app = Flask(__name__)
     app.register_blueprint(api, url_prefix='/api')
-    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
+    app.config['SQLALCHEMY_DATABASE_URI'] = (
+        f"sqlite:///{db_path}")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.urandom(24)
 
@@ -65,8 +66,9 @@ def create_app():
         count = 0
         for genre_name in genres_to_add:
             # Check if genre already exists (case-insensitive)
-            existing_genre = Genre.query.filter(func.lower(
-                Genre.name) == func.lower(genre_name)).first()
+            existing_genre = Genre.query.filter(
+                func.lower(Genre.name) == func.lower(genre_name)
+            ).first()
             if not existing_genre:
                 try:
                     new_genre = Genre(name=genre_name)
@@ -173,9 +175,9 @@ def create_app():
 
         # Apply watched filter
         if filter_watched == 'watched':
-            query = query.filter(UserMovie.watched == True)
+            query = query.filter(UserMovie.watched)
         elif filter_watched == 'unwatched':
-            query = query.filter(UserMovie.watched == False)
+            query = query.filter(~UserMovie.watched)
 
         # Apply genre filter using the relationship on the joined Movie
         if filter_genre_id != 'all':
@@ -244,7 +246,9 @@ def create_app():
             User.name == new_name, User.id != user_id).first()
         if existing_user:
             flash(
-                f'Another user with the name "{new_name}" already exists.', 'warning')
+                f'Another user with the name "{new_name}" already exists.',
+                'warning'
+            )
             return redirect(url_for('edit_user_form', user_id=user_id))
 
         # Store old URL for potential deletion
@@ -331,7 +335,7 @@ def create_app():
 
         except Exception as e:
             # Rollback in case of error during commit or upload
-            db.session.rollback()  
+            db.session.rollback()
             flash(f'Error adding user: {str(e)}', 'danger')
 
         return redirect(url_for('list_users'))
@@ -342,7 +346,7 @@ def create_app():
         user = User.query.get_or_404(user_id)
         try:
             # Get name for flash message and URL before deletion
-            user_name = user.name  
+            user_name = user.name
             pic_url_to_delete = user.profile_pic_url
 
             # Delete user from DB (cascades should handle UserMovie entries)
@@ -366,7 +370,9 @@ def create_app():
             if session.get('user_id') == user_id:
                 session.pop('user_id', None)
                 flash(
-                    f'User "{user_name}" deleted. You have been logged out as this user.', 'info')
+                    f'User "{user_name}" deleted. You have been logged out as this user.',
+                    'info'
+                )
             else:
                 flash(f'User "{user_name}" deleted successfully!', 'success')
 
@@ -389,7 +395,9 @@ def create_app():
             db.session.delete(movie)
             db.session.commit()
             flash(
-                f'Movie "{movie_title}" deleted successfully from the main database!', 'success')
+                f'Movie "{movie_title}" deleted successfully from the main database!',
+                'success'
+            )
 
         except Exception as e:
             db.session.rollback()
@@ -402,7 +410,7 @@ def create_app():
     @app.route('/movie/<int:movie_id>')
     def movie_detail(movie_id):
         movie = Movie.query.get_or_404(movie_id)
-        user_movie = None 
+        user_movie = None
         all_genres = Genre.query.order_by(Genre.name).all()
 
         # Check if a user is logged in
@@ -507,7 +515,7 @@ def create_app():
             try:
                 # Get short plot
                 params = {'i': imdb_id, 'apikey': OMDB_API_KEY,
-                          'plot': 'short'}  
+                          'plot': 'short'}
                 response = requests.get(
                     "http://www.omdbapi.com/", params=params)
                 response.raise_for_status()
@@ -542,7 +550,9 @@ def create_app():
                     db.session.add(movie)
                     db.session.commit()
                     flash(
-                        f'Movie "{movie.title}" added to the main database.', 'success')
+                        f'Movie "{movie.title}" added to the main database.',
+                        'success'
+                    )
                     new_movie_added = True
                 else:
                     flash(
@@ -594,7 +604,9 @@ def create_app():
                             db.session.add(user_movie_link)
                             db.session.commit()
                             flash(
-                                f'Movie "{movie.title}" added to your list.', 'success')
+                                f'Movie "{movie.title}" added to your list.',
+                                'success'
+                            )
                         except Exception as e:
                             db.session.rollback()
                             flash(
@@ -643,11 +655,13 @@ def create_app():
         if user_movie:
             try:
                 # Toggle the status
-                user_movie.watched = not user_movie.watched  
+                user_movie.watched = not user_movie.watched
                 db.session.commit()
                 status = "watched" if user_movie.watched else "not watched"
                 flash(
-                    f'Movie "{user_movie.movie.title}" marked as {status}.', 'success')
+                    f'Movie "{user_movie.movie.title}" marked as {status}.',
+                    'success'
+                )
             except Exception as e:
                 db.session.rollback()
                 flash(f'Error updating watched status: {str(e)}', 'danger')
@@ -675,7 +689,9 @@ def create_app():
                 db.session.commit()
 
                 flash(
-                    f'"{movie_title}" has been removed from your list.', 'success')
+                    f'"{movie_title}" has been removed from your list.',
+                    'success'
+                )
             except Exception as e:
                 db.session.rollback()
                 flash(

@@ -9,9 +9,9 @@ db = SQLAlchemy()
 movie_genre = db.Table(
     'movie_genre',
     db.Column('movie_id', db.Integer, db.ForeignKey(
-        'movies.id'),   primary_key=True),
+        'movies.id'), primary_key=True),
     db.Column('genre_id', db.Integer, db.ForeignKey(
-        'genres.id'),   primary_key=True),
+        'genres.id'), primary_key=True),
 )
 
 
@@ -74,5 +74,8 @@ class UserMovie(db.Model):
     movie = db.relationship('Movie', back_populates='users')
 
     def __repr__(self):
-        return (f"<UserMovie user_id={self.user_id} movie_id={self.movie_id} "
-                f"rating={self.rating} watched={self.watched} added_on={self.added_on:%Y-%m-%d}>")
+        return (
+            f"<UserMovie user_id={self.user_id} movie_id={self.movie_id} "
+            f"rating={self.rating} watched={self.watched} "
+            f"added_on={self.added_on:%Y-%m-%d}>"
+        )

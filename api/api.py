@@ -20,7 +20,11 @@ def greet_user(name):
 def get_users():
     users = User.query.all()
     return jsonify([
-        {"id": u.id, "name": u.name, "profile_pic_url": u.profile_pic_url}
+        {
+            "id": u.id,
+            "name": u.name,
+            "profile_pic_url": u.profile_pic_url
+        }
         for u in users
     ])
 
@@ -64,14 +68,18 @@ def add_favorite_movies(user_id):
         title = item.get('title')
         imdb_id = item.get('imdb_id')
         if not (title or imdb_id):
-            errors.append(
-                {'movie': item, 'error': 'title or imdb_id required'})
+            errors.append({
+                'movie': item,
+                'error': 'title or imdb_id required'
+            })
             continue
         try:
             # If title provided, search OMDb to get imdb_id
             if title and not imdb_id:
                 resp = requests.get(
-                    'http://www.omdbapi.com/', params={'s': title, 'apikey': api_key, 'type': 'movie'})
+                    'http://www.omdbapi.com/',
+                    params={'s': title, 'apikey': api_key, 'type': 'movie'}
+                )
                 resp.raise_for_status()
                 sd = resp.json()
                 if sd.get('Response') != 'True' or not sd.get('Search'):
@@ -79,7 +87,9 @@ def add_favorite_movies(user_id):
                 imdb_id = sd['Search'][0].get('imdbID')
             # Fetch full details from OMDb
             resp = requests.get(
-                'http://www.omdbapi.com/', params={'i': imdb_id, 'apikey': api_key, 'plot': 'short'})
+                'http://www.omdbapi.com/',
+                params={'i': imdb_id, 'apikey': api_key, 'plot': 'short'}
+            )
             resp.raise_for_status()
             details = resp.json()
             if details.get('Response') != 'True':
@@ -95,6 +105,8 @@ def add_favorite_movies(user_id):
             # Create or get movie
             movie = Movie.query.filter_by(omdb_id=imdb_id).first()
             if not movie:
+                poster = details.get('Poster')
+                poster_url = poster if poster != 'N/A' else None
                 movie = Movie(
                     title=details.get('Title'),
                     director=details.get('Director'),
@@ -102,8 +114,7 @@ def add_favorite_movies(user_id):
                     omdb_id=imdb_id,
                     plot_short=details.get('Plot', ''),
                     imdb_rating=details.get('imdbRating'),
-                    poster_url=(details.get('Poster') if details.get(
-                        'Poster') != 'N/A' else None)
+                    poster_url=poster_url
                 )
                 db.session.add(movie)
                 db.session.commit()
@@ -113,8 +124,11 @@ def add_favorite_movies(user_id):
                 link = UserMovie(user_id=user_id, movie_id=movie.id)
                 db.session.add(link)
                 db.session.commit()
-            added.append(
-                {'movie_id': movie.id, 'imdb_id': imdb_id, 'title': movie.title})
+            added.append({
+                'movie_id': movie.id,
+                'imdb_id': imdb_id,
+                'title': movie.title
+            })
         except Exception as e:
             errors.append({'movie': item, 'error': str(e)})
     return jsonify({'added': added, 'errors': errors}), 200
