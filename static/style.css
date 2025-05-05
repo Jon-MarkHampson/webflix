@@ -99,24 +99,14 @@ header h1 {
 }
 
 header h1 a {
-  color: var(--color-brand); /* Moved from inline style */
-  text-decoration: none; /* Moved from inline style */
-}
-
-header h1 a:hover {
-  transform: translateY(-2px);
-  text-decoration: none; /* Optional hover effect */
+  color: var(--color-brand);
+  text-decoration: none;
 }
 
 header nav a {
   color: var(--color-white);
   text-decoration: none;
   margin: 15px; /* Add some space between nav links */
-}
-
-header nav a:hover {
-  transform: translateY(-2px);
-  text-decoration: none;
 }
 
 /* Navbar active link */
@@ -138,8 +128,8 @@ a:hover,
 
 /* Override header nav hover */
 header nav a:hover {
-  /* No underline and slight movement */
-  transform: translateY(-2px);
+  color: var(--color-danger-dark);
+  transform: none;
   text-decoration: none;
 }
 
@@ -175,8 +165,9 @@ header .user-link {
 }
 
 header .user-link:hover {
-  color: var(--color-white);
+  color: var(--color-danger-dark);
   text-decoration: none;
+  transform: none;
 }
 
 .movie-grid-container {
