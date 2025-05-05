@@ -1295,6 +1295,13 @@ a.active-nav,
     display: flex;
     align-items: center;
   }
+
+  header .user-info .user-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;;
+  }
+
   .card-grid {
     grid-template-columns: repeat(3, 1fr); /* 3 columns */
   }

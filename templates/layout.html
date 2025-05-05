@@ -50,22 +50,27 @@
         {% endif %}
       </nav>
       <div class="user-info">
-        {# Added div to group user info/login #} {% if current_user %} {% if
-        current_user.profile_pic_url %}
-        <img
-          src="{{ current_user.profile_pic_url }}"
-          alt="{{ current_user.name }}'s avatar"
-          width="30"
-          height="30"
-          class="header-avatar"
-        />
-        {% else %}
-        <span class="avatar-placeholder header-avatar"
-          >{{ current_user.name[0] }}</span
+        {# Added div to group user info/login #} {% if current_user %} {# Wrap
+        avatar and name in a link to the user list #}
+        <a
+          href="{{ url_for('list_users') }}"
+          class="user-link"
         >
-        {% endif %}
-        <span class="user-name">{{ current_user.name }}</span>
-
+          {% if current_user.profile_pic_url %}
+          <img
+            src="{{ current_user.profile_pic_url }}"
+            alt="{{ current_user.name }}'s avatar"
+            width="30"
+            height="30"
+            class="header-avatar"
+          />
+          {% else %}
+          <span class="avatar-placeholder header-avatar"
+            >{{ current_user.name[0] }}</span
+          >
+          {% endif %}
+          <span class="user-name">{{ current_user.name }}</span>
+        </a>
         {% endif %}
       </div>
     </header>
