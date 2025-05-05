@@ -5,17 +5,23 @@ block title %} {{ movie.title }} - Movie Details {% endblock %} {% block content
 <div class="container mt-4">
   <div class="row">
     <div class="movie-detail-poster-wrapper">
-      {% if movie.poster_url %}
-      <img
-        src="{{ movie.poster_url }}"
-        alt="Poster for {{ movie.title }}"
-        class="img-fluid rounded shadow-sm mb-3"
-      />
-      {% else %}
-      <div class="movie-detail-poster">
-        <span class="poster-placeholder">[No Poster]</span>
-      </div>
-      {% endif %}
+      <a
+        href="https://www.imdb.com/title/{{ movie.omdb_id }}/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {% if movie.poster_url %}
+        <img
+          src="{{ movie.poster_url }}"
+          alt="Poster for {{ movie.title }}"
+          class="img-fluid rounded shadow-sm mb-3"
+        />
+        {% else %}
+        <div class="movie-detail-poster">
+          <span class="poster-placeholder">[No Poster]</span>
+        </div>
+        {% endif %}
+      </a>
     </div>
     <div class="movie-detail-text-wrapper">
       <h2>{{ movie.title }}</h2>
@@ -33,7 +39,16 @@ block title %} {{ movie.title }} - Movie Details {% endblock %} {% block content
         {{ movie.plot_short if movie.plot_short else 'No plot summary
         available.' }}
       </p>
-      <p><strong>IMDb ID:</strong> {{ movie.omdb_id }}</p>
+      <p>
+        <strong>IMDb ID:</strong>
+        <a
+          href="https://www.imdb.com/title/{{ movie.omdb_id }}/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ movie.omdb_id }}
+        </a>
+      </p>
 
       <div class="movie-detail-button-wrapper">
         {% if current_user %} {# The user_movie object is now passed directly
