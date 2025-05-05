@@ -22,20 +22,19 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.urandom(24)
 
-    # --- Cloudinary Configuration ---
+    # Set up Cloudinary configuration
     cloudinary.config(
         cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
         api_key=os.environ.get("CLOUDINARY_API_KEY"),
         api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
         secure=True  # Use https
     )
-    # --- End Cloudinary Configuration ---
 
-    # --- OMDb API Key ---
+    # Check if OMDB API key is set
     OMDB_API_KEY = os.environ.get("OMDB_API_KEY")
     if not OMDB_API_KEY:
         print("Warning: OMDB_API_KEY environment variable not set.")
-    # --- End OMDb API Key ---
+
 
     db.init_app(app)
 
@@ -88,20 +87,19 @@ def create_app():
 
         # Get the list of UserMovie association objects
         user_movies = current_user.favorites
-        # Pass the list of UserMovie objects to the template under the key 'movies'
-        # Remove search form logic from here
+        if not user_movies:
+            flash('No movies found for this user.', 'info')
+            return render_template('my_movies.html', movies=[], user=current_user)
         return render_template('my_movies.html', movies=user_movies, user=current_user)
 
-    # --- Route to show the dedicated Add/Search Movie Page ---
+    # --- Route to handle adding movies to a user's list ---
     @app.route('/add-movie-search')
     def add_movie_search_page():
         # Determine if the user is logged in to set the context for adding
         add_to_user = 'user_id' in session
         return render_template('add_movie_search.html', add_to_user=add_to_user)
-    # --- End Add/Search Movie Page Route ---
-
-    # --- Route to show edit user form ---
-
+    
+    # --- Route to handle user editing ---
     @app.route('/user/<int:user_id>/edit', methods=['GET'])
     def edit_user_form(user_id):
         user = User.query.get_or_404(user_id)  # Get user or return 404
@@ -126,8 +124,9 @@ def create_app():
                 f'Another user with the name "{new_name}" already exists.', 'warning')
             return redirect(url_for('edit_user_form', user_id=user_id))
 
+        # Store old URL for potential deletion
         try:
-            old_pic_url = user.profile_pic_url  # Store old URL for potential deletion
+            old_pic_url = user.profile_pic_url 
 
             # Handle picture update
             if profile_pic_file and profile_pic_file.filename != '':
@@ -171,6 +170,7 @@ def create_app():
 
         return redirect(url_for('list_users'))
 
+    # --- Route to handle adding a new user ---
     @app.route('/add_user', methods=['POST'])
     def add_user():
         name = request.form.get('name')
@@ -271,7 +271,6 @@ def create_app():
 
         # Redirect back to the all movies list
         return redirect(url_for('list_all_movies'))
-    # --- End Delete Movie Route ---
 
     # --- Movie Detail Route ---
     @app.route('/movie/<int:movie_id>')
@@ -288,7 +287,6 @@ def create_app():
 
         # Pass the movie and the specific user_movie object (if found) to the template
         return render_template('movie_detail.html', movie=movie, user_movie=user_movie)
-    # --- End Movie Detail Route ---
 
     # --- OMDb Movie Search Route ---
     @app.route('/search_movies')
@@ -339,9 +337,8 @@ def create_app():
                                results=search_results,
                                search_title=search_title,
                                add_to_user=add_to_user_flag)  # Pass the flag here
-    # --- End OMDb Movie Search Route ---
 
-    # --- Add Movie Route (Implementation) ---
+    # --- Add Movie Route ---
     # Allow POST requests from the form
     @app.route('/add_movie/<imdb_id>', methods=['POST'])
     def add_movie_from_omdb(imdb_id):
@@ -489,8 +486,8 @@ def create_app():
 
         # 5. Redirect to the appropriate success page
         return redirect(success_redirect_url)
-    # --- End Add Movie Route ---
 
+    # --- Set User Route ---
     @app.route('/set_user/<int:user_id>')
     def set_user(user_id):
         user = User.query.get(user_id)
@@ -527,7 +524,6 @@ def create_app():
                   'warning')  # Corrected indentation
 
         return redirect(url_for('list_my_movies', user_id=user_id))
-    # --- End Toggle Watched Status Route ---
 
     # --- Delete movie from user's list Route ---
     @app.route('/users/<int:user_id>/movies/<int:movie_id>/delete', methods=['POST'])
