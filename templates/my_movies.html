@@ -24,6 +24,15 @@
       <option value="unwatched" {% if filter_watched == 'unwatched' %}selected{% endif %}>Unwatched</option>
     </select>
 
+    {# Add Genre Filter Dropdown #}
+    <span>Genre:</span>
+    <select name="filter_genre_id">
+      <option value="all" {% if filter_genre_id == 'all' %}selected{% endif %}>All Genres</option>
+      {% for genre in all_genres %}
+        <option value="{{ genre.id }}" {% if filter_genre_id == genre.id|string %}selected{% endif %}>{{ genre.name }}</option>
+      {% endfor %}
+    </select>
+
     <button type="submit" class="button button-primary">Apply</button>
   </form>
 

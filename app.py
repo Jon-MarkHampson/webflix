@@ -1,6 +1,6 @@
 import os
 from flask import Flask, jsonify, render_template, session, redirect, url_for, flash, request
-from models import db, User, Movie, UserMovie
+from models import db, User, Movie, UserMovie, Genre  # Add Genre
 import datetime
 import cloudinary
 import cloudinary.uploader
@@ -53,6 +53,37 @@ def create_app():
         db.create_all()
         print(f"✅ Database initialized at {db_path}")
 
+    @app.cli.command("seed-genres")
+    def seed_genres():
+        """Seeds the database with a predefined list of movie genres."""
+        genres_to_add = [
+            'Action', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime',
+            'Documentary', 'Drama', 'Family', 'Fantasy', 'Film Noir', 'History',
+            'Horror', 'Music', 'Musical', 'Mystery', 'Romance', 'Sci-Fi',
+            'Short Film', 'Sport', 'Superhero', 'Thriller', 'War', 'Western'
+        ]
+        count = 0
+        for genre_name in genres_to_add:
+            # Check if genre already exists (case-insensitive)
+            existing_genre = Genre.query.filter(func.lower(
+                Genre.name) == func.lower(genre_name)).first()
+            if not existing_genre:
+                try:
+                    new_genre = Genre(name=genre_name)
+                    db.session.add(new_genre)
+                    db.session.commit()
+                    count += 1
+                except Exception as e:
+                    db.session.rollback()
+                    print(f"Error adding genre '{genre_name}': {e}")
+            # else: # Optional: print message if genre already exists
+            #     print(f"Genre '{genre_name}' already exists.")
+
+        if count > 0:
+            print(f"✅ Added {count} new genres to the database.")
+        else:
+            print("ℹ️ All predefined genres already exist in the database.")
+
     @app.route('/')
     def home():
         return render_template('home.html')
@@ -72,17 +103,27 @@ def create_app():
         # Get sorting/filtering parameters from query string
         sort_by = request.args.get('sort_by', 'title')  # Default sort by title
         sort_dir = request.args.get('sort_dir', 'asc')  # Default ascending
-        filter_genre = request.args.get(
-            'filter_genre', 'all')  # Default all genres
+        # Change filter param to expect genre ID
+        filter_genre_id = request.args.get(
+            'filter_genre_id', 'all')  # Default all genres
+
+        # Fetch all genres for the dropdown
+        all_genres = Genre.query.order_by(Genre.name).all()
 
         # Base query
         query = Movie.query
 
-        # Apply genre filter
-        if filter_genre != 'all':
-            # Use case-insensitive comparison for genre filtering
-            query = query.filter(func.lower(Movie.genre).ilike(
-                f'%{filter_genre.lower()}%'))
+        # Apply genre filter using the relationship
+        if filter_genre_id != 'all':
+            try:
+                genre_id_int = int(filter_genre_id)
+                # Filter movies that have the selected genre ID in their genres relationship
+                query = query.filter(
+                    Movie.genres.any(Genre.id == genre_id_int))
+            except ValueError:
+                flash('Invalid genre selected.', 'warning')
+                # Optionally reset filter_genre_id to 'all' or handle error differently
+                filter_genre_id = 'all'
 
         # Determine sort direction
         direction = asc if sort_dir == 'asc' else desc
@@ -91,25 +132,23 @@ def create_app():
         if sort_by == 'title':
             query = query.order_by(direction(func.lower(Movie.title)))
         elif sort_by == 'release_date':
-            # Assuming 'year' is the field for release date
             query = query.order_by(direction(Movie.year))
         elif sort_by == 'rating':
-            # Assuming 'imdb_rating' is the field
-            # Handle 'N/A' or non-numeric ratings if necessary, sorting them last
-            # Basic sorting, might need refinement for 'N/A'
             query = query.order_by(direction(Movie.imdb_rating))
-        elif sort_by == 'genre':
-            query = query.order_by(direction(func.lower(Movie.genre)))
-        # Add more sort options if needed (e.g., date_added if you add a timestamp)
+        # Sorting by genre name is more complex with many-to-many,
+        # might require joining or subqueries. Removing for now.
+        # elif sort_by == 'genre':
+        #      query = query.order_by(direction(func.lower(Movie.genre)))
 
         movies = query.all()
 
-        # Pass current sort/filter values to template
+        # Pass current sort/filter values and all genres to template
         return render_template('all_movies.html',
                                movies=movies,
                                sort_by=sort_by,
                                sort_dir=sort_dir,
-                               filter_genre=filter_genre)
+                               filter_genre_id=filter_genre_id,  # Pass ID
+                               all_genres=all_genres)  # Pass all genres for dropdown
 
     @app.route('/my-movies')
     def list_my_movies():
@@ -129,6 +168,11 @@ def create_app():
         sort_dir = request.args.get('sort_dir', 'asc')  # Default ascending
         filter_watched = request.args.get(
             'filter_watched', 'all')  # Default all
+        filter_genre_id = request.args.get(
+            'filter_genre_id', 'all')  # Add genre filter
+
+        # Fetch all genres for the dropdown
+        all_genres = Genre.query.order_by(Genre.name).all()
 
         # Base query for UserMovie association objects, joining with Movie
         query = UserMovie.query.filter_by(user_id=user_id).join(Movie)
@@ -138,6 +182,17 @@ def create_app():
             query = query.filter(UserMovie.watched == True)
         elif filter_watched == 'unwatched':
             query = query.filter(UserMovie.watched == False)
+
+        # Apply genre filter using the relationship on the joined Movie
+        if filter_genre_id != 'all':
+            try:
+                genre_id_int = int(filter_genre_id)
+                # Filter based on the joined Movie's genres
+                query = query.filter(
+                    Movie.genres.any(Genre.id == genre_id_int))
+            except ValueError:
+                flash('Invalid genre selected.', 'warning')
+                filter_genre_id = 'all'
 
         # Determine sort direction
         direction = asc if sort_dir == 'asc' else desc
@@ -149,7 +204,7 @@ def create_app():
             query = query.order_by(direction(Movie.year))
         elif sort_by == 'rating':
             query = query.order_by(direction(Movie.imdb_rating))
-        # Add more sort options if needed
+        # Sorting by genre name is complex here too.
 
         user_movies = query.all()
 
@@ -157,13 +212,15 @@ def create_app():
             # Only show "no movies" if there are truly no movies, not just filtered out
             flash('No movies found for this user.', 'info')
 
-        # Pass current sort/filter values to template
+        # Pass current sort/filter values and all genres to template
         return render_template('my_movies.html',
                                movies=user_movies,
                                user=current_user,
                                sort_by=sort_by,
                                sort_dir=sort_dir,
-                               filter_watched=filter_watched)
+                               filter_watched=filter_watched,
+                               filter_genre_id=filter_genre_id,  # Pass ID
+                               all_genres=all_genres)  # Pass all genres
 
     @app.route('/add-movie-search')
     def add_movie_search_page():
@@ -349,6 +406,7 @@ def create_app():
     def movie_detail(movie_id):
         movie = Movie.query.get_or_404(movie_id)
         user_movie = None  # Initialize user_movie as None
+        all_genres = Genre.query.order_by(Genre.name).all()  # Fetch all genres
 
         # Check if a user is logged in
         user_id = session.get('user_id')
@@ -357,8 +415,11 @@ def create_app():
             user_movie = UserMovie.query.filter_by(
                 user_id=user_id, movie_id=movie_id).first()
 
-        # Pass the movie and the specific user_movie object (if found) to the template
-        return render_template('movie_detail.html', movie=movie, user_movie=user_movie)
+        # Pass the movie, user_movie, and all genres to the template
+        return render_template('movie_detail.html',
+                               movie=movie,
+                               user_movie=user_movie,
+                               all_genres=all_genres)  # Pass genres
 
     # --- OMDb Movie Search Route ---
     @app.route('/search_movies')
@@ -625,6 +686,35 @@ def create_app():
 
         # Redirect back to the user's movie list
         return redirect(url_for('list_my_movies'))
+
+    # --- Update Movie Genres Route ---
+    @app.route('/movie/<int:movie_id>/update_genres', methods=['POST'])
+    def update_movie_genres(movie_id):
+        movie = Movie.query.get_or_404(movie_id)
+        # Get list of selected genre IDs from the form. Use getlist for multi-select.
+        selected_genre_ids = request.form.getlist('genre_ids')
+
+        # Limit to a maximum of 4 genres
+        if len(selected_genre_ids) > 4:
+            flash('You can select a maximum of 4 genres.', 'warning')
+            return redirect(url_for('movie_detail', movie_id=movie_id))
+
+        try:
+            # Fetch the Genre objects corresponding to the selected IDs
+            selected_genres = Genre.query.filter(
+                Genre.id.in_(selected_genre_ids)).all()
+
+            # Update the movie's genres relationship
+            movie.genres = selected_genres
+
+            db.session.commit()
+            flash('Movie genres updated successfully!', 'success')
+
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error updating genres: {str(e)}', 'danger')
+
+        return redirect(url_for('movie_detail', movie_id=movie_id))
 
     return app
 

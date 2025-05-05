@@ -19,25 +19,12 @@
     </select>
 
     <span>Genre:</span>
-    <select name="filter_genre">
-      <option value="all" {% if filter_genre == 'all' %}selected{% endif %}>All Genres</option>
-      {# Add common genres - consider generating this dynamically if you have many #}
-      <option value="Action" {% if filter_genre == 'Action' %}selected{% endif %}>Action</option>
-      <option value="Comedy" {% if filter_genre == 'Comedy' %}selected{% endif %}>Comedy</option>
-      <option value="Drama" {% if filter_genre == 'Drama' %}selected{% endif %}>Drama</option>
-      <option value="Horror" {% if filter_genre == 'Horror' %}selected{% endif %}>Horror</option>
-      <option value="Romance" {% if filter_genre == 'Romance' %}selected{% endif %}>Romance</option>
-      <option value="Sci-Fi" {% if filter_genre == 'Sci-Fi' %}selected{% endif %}>Sci-Fi</option>
-      <option value="Thriller" {% if filter_genre == 'Thriller' %}selected{% endif %}>Thriller</option>
-      <option value="Fantasy" {% if filter_genre == 'Fantasy' %}selected{% endif %}>Fantasy</option>
-      <option value="Documentary" {% if filter_genre == 'Documentary' %}selected{% endif %}>Documentary</option>
-      <option value="Animation" {% if filter_genre == 'Animation' %}selected{% endif %}>Animation</option>
-      <option value="Mystery" {% if filter_genre == 'Mystery' %}selected{% endif %}>Mystery</option>
-      <option value="Adventure" {% if filter_genre == 'Adventure' %}selected{% endif %}>Adventure</option>
-      <option value="Biography" {% if filter_genre == 'Biography' %}selected{% endif %}>Biography</option>
-      <option value="Crime" {% if filter_genre == 'Crime' %}selected{% endif %}>Crime</option>
-      <option value="Family" {% if filter_genre == 'Family' %}selected{% endif %}>Family</option>
-      {# Add more genres as needed #}
+    {# Change name to filter_genre_id and populate with Genre objects #}
+    <select name="filter_genre_id">
+      <option value="all" {% if filter_genre_id == 'all' %}selected{% endif %}>All Genres</option>
+      {% for genre in all_genres %}
+        <option value="{{ genre.id }}" {% if filter_genre_id == genre.id|string %}selected{% endif %}>{{ genre.name }}</option>
+      {% endfor %}
     </select>
 
     <button type="submit" class="button button-primary">Apply</button>
