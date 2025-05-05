@@ -1,38 +1,68 @@
 {% extends 'layout.html' %} {% block title %}{{ user.name }}'s Movies{% endblock %} {% block content %}
+<div class="container mt-4">
+  <h2>{{ user.name }}'s Movies</h2>
 
-<div class="movie-grid-container">
-  <div class="sort-wrapper">
-    
-  </div>
-  {% if movies %}
-  <div class="card-grid">
-    {# Loop through UserMovie association objects #}
-    {% for user_movie in movies%}
-    {% set movie = user_movie.movie %}
-    {# Get the actual Movie object #}
+  {# Sorting and Filtering Form #}
+  <form method="GET" action="{{ url_for('list_my_movies') }}" class="sort-wrapper mb-4">
+    <span>Sort by:</span>
+    <select name="sort_by">
+      <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Title</option>
+      <option value="release_date" {% if sort_by == 'release_date' %}selected{% endif %}>Release Year</option>
+      <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Rating (IMDb)</option>
+      {# Add other sortable fields if needed #}
+    </select>
 
-    <div
-      class="card {% if user_movie.watched %}border border-success border-3{% endif %}"
-    >
-      <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
-        {% if movie.poster_url %}
-        <img
-          src="{{ movie.poster_url }}"
-          class="card-img-top"
-          alt="{{ movie.title }} Poster"
-        />
-        {% else %}
-        <div class="card-img-top movie-poster-placeholder">
-          <span>No Poster</span>
-        </div>
-        {% endif %}
-      </a>
+    <select name="sort_dir">
+      <option value="asc" {% if sort_dir == 'asc' %}selected{% endif %}>Ascending</option>
+      <option value="desc" {% if sort_dir == 'desc' %}selected{% endif %}>Descending</option>
+    </select>
+
+    <span>Status:</span>
+    <select name="filter_watched">
+      <option value="all" {% if filter_watched == 'all' %}selected{% endif %}>All</option>
+      <option value="watched" {% if filter_watched == 'watched' %}selected{% endif %}>Watched</option>
+      <option value="unwatched" {% if filter_watched == 'unwatched' %}selected{% endif %}>Unwatched</option>
+    </select>
+
+    <button type="submit" class="button button-primary">Apply</button>
+  </form>
+
+  <div class="movie-grid-container">
+    {% if movies %}
+    <div class="card-grid">
+      {# Loop through UserMovie association objects #}
+      {% for user_movie in movies %}
+      {% set movie = user_movie.movie %} {# Get the actual Movie object #}
+
+      <div class="card {% if user_movie.watched %}border border-success border-3{% endif %}">
+        <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
+          {% if movie.poster_url %}
+          <img
+            src="{{ movie.poster_url }}"
+            class="card-img-top"
+            alt="{{ movie.title }} Poster"
+          />
+          {% else %}
+          <div class="card-img-top movie-poster-placeholder">
+            <span>No Poster</span>
+          </div>
+          {% endif %}
+        </a>
+        {# Optional: Add movie title or other info below the poster if desired #}
+        {# <div class="card-body p-2">
+          <h5 class="card-title fs-6 mb-0">{{ movie.title }}</h5>
+        </div> #}
+      </div>
+      {% endfor %}
     </div>
-
-    {% endfor %}
+    {% else %}
+    {# Adjust message based on whether filters are active #}
+    {% if sort_by != 'title' or sort_dir != 'asc' or filter_watched != 'all' %}
+      <p>No movies found matching your criteria in {{ user.name }}'s list.</p>
+    {% else %}
+      <p>{{ user.name }} hasn't added any movies to their list yet.</p>
+    {% endif %}
+    {% endif %}
   </div>
-  {% else %}
-  <p>You haven't added any movies to your list yet.</p>
-  {% endif %}
 </div>
 {% endblock %}

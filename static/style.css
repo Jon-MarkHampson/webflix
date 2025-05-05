@@ -1210,7 +1210,6 @@ a.active-nav,
   background-color: var(--color-lighter);
   border-radius: 8px;
   box-shadow: var(--shadow-small);
-
 }
 
 .movie-detail-poster-wrapper {
@@ -1225,7 +1224,7 @@ a.active-nav,
   gap: 10px;
 }
 
-.home-text-wrapper{
+.home-text-wrapper {
   max-width: 800px;
 }
 
@@ -1234,6 +1233,40 @@ a.active-nav,
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+/* Sorting/Filtering Controls Wrapper */
+.sort-wrapper {
+  background-color: var(--color-lighter);
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+  align-items: center;
+  gap: 10px; /* Space between elements */
+  border: 1px solid var(--border-color);
+}
+
+.sort-wrapper span {
+  font-weight: 500;
+  margin-right: 5px;
+}
+
+.sort-wrapper select {
+  padding: 6px 10px;
+  border: 1px solid var(--color-gray-light);
+  border-radius: 4px;
+  background-color: var(--color-white);
+  font-size: 0.9em;
+  flex-grow: 1; /* Allow selects to grow */
+  min-width: 120px; /* Minimum width for selects */
+}
+
+.sort-wrapper button {
+  padding: 6px 15px;
+  font-size: 0.9em;
+  margin-left: auto; /* Push button to the right on wider screens */
 }
 
 /* Media Queries */

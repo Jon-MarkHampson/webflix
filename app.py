@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import requests
 from sqlalchemy.exc import IntegrityError
 from api.api import api
+from sqlalchemy import asc, desc, func  # Add func for lower case sorting
 
 load_dotenv()
 
@@ -34,7 +35,6 @@ def create_app():
     OMDB_API_KEY = os.environ.get("OMDB_API_KEY")
     if not OMDB_API_KEY:
         print("Warning: OMDB_API_KEY environment variable not set.")
-
 
     db.init_app(app)
 
@@ -69,8 +69,47 @@ def create_app():
 
     @app.route('/all-movies')
     def list_all_movies():
-        movies = Movie.query.all()
-        return render_template('all_movies.html', movies=movies)
+        # Get sorting/filtering parameters from query string
+        sort_by = request.args.get('sort_by', 'title')  # Default sort by title
+        sort_dir = request.args.get('sort_dir', 'asc')  # Default ascending
+        filter_genre = request.args.get(
+            'filter_genre', 'all')  # Default all genres
+
+        # Base query
+        query = Movie.query
+
+        # Apply genre filter
+        if filter_genre != 'all':
+            # Use case-insensitive comparison for genre filtering
+            query = query.filter(func.lower(Movie.genre).ilike(
+                f'%{filter_genre.lower()}%'))
+
+        # Determine sort direction
+        direction = asc if sort_dir == 'asc' else desc
+
+        # Apply sorting - handle case-insensitivity for text fields
+        if sort_by == 'title':
+            query = query.order_by(direction(func.lower(Movie.title)))
+        elif sort_by == 'release_date':
+            # Assuming 'year' is the field for release date
+            query = query.order_by(direction(Movie.year))
+        elif sort_by == 'rating':
+            # Assuming 'imdb_rating' is the field
+            # Handle 'N/A' or non-numeric ratings if necessary, sorting them last
+            # Basic sorting, might need refinement for 'N/A'
+            query = query.order_by(direction(Movie.imdb_rating))
+        elif sort_by == 'genre':
+            query = query.order_by(direction(func.lower(Movie.genre)))
+        # Add more sort options if needed (e.g., date_added if you add a timestamp)
+
+        movies = query.all()
+
+        # Pass current sort/filter values to template
+        return render_template('all_movies.html',
+                               movies=movies,
+                               sort_by=sort_by,
+                               sort_dir=sort_dir,
+                               filter_genre=filter_genre)
 
     @app.route('/my-movies')
     def list_my_movies():
@@ -85,20 +124,53 @@ def create_app():
             session.pop('user_id', None)
             return redirect(url_for('list_users'))
 
-        # Get the list of UserMovie association objects
-        user_movies = current_user.favorites
-        if not user_movies:
-            flash('No movies found for this user.', 'info')
-            return render_template('my_movies.html', movies=[], user=current_user)
-        return render_template('my_movies.html', movies=user_movies, user=current_user)
+        # Get sorting/filtering parameters
+        sort_by = request.args.get('sort_by', 'title')  # Default sort by title
+        sort_dir = request.args.get('sort_dir', 'asc')  # Default ascending
+        filter_watched = request.args.get(
+            'filter_watched', 'all')  # Default all
 
-    # --- Route to handle adding movies to a user's list ---
+        # Base query for UserMovie association objects, joining with Movie
+        query = UserMovie.query.filter_by(user_id=user_id).join(Movie)
+
+        # Apply watched filter
+        if filter_watched == 'watched':
+            query = query.filter(UserMovie.watched == True)
+        elif filter_watched == 'unwatched':
+            query = query.filter(UserMovie.watched == False)
+
+        # Determine sort direction
+        direction = asc if sort_dir == 'asc' else desc
+
+        # Apply sorting based on Movie attributes
+        if sort_by == 'title':
+            query = query.order_by(direction(func.lower(Movie.title)))
+        elif sort_by == 'release_date':
+            query = query.order_by(direction(Movie.year))
+        elif sort_by == 'rating':
+            query = query.order_by(direction(Movie.imdb_rating))
+        # Add more sort options if needed
+
+        user_movies = query.all()
+
+        if not user_movies and filter_watched == 'all' and sort_by == 'title' and sort_dir == 'asc':
+            # Only show "no movies" if there are truly no movies, not just filtered out
+            flash('No movies found for this user.', 'info')
+
+        # Pass current sort/filter values to template
+        return render_template('my_movies.html',
+                               movies=user_movies,
+                               user=current_user,
+                               sort_by=sort_by,
+                               sort_dir=sort_dir,
+                               filter_watched=filter_watched)
+
     @app.route('/add-movie-search')
     def add_movie_search_page():
         # Determine if the user is logged in to set the context for adding
         add_to_user = 'user_id' in session
         return render_template('add_movie_search.html', add_to_user=add_to_user)
-    
+
     # --- Route to handle user editing ---
     @app.route('/user/<int:user_id>/edit', methods=['GET'])
     def edit_user_form(user_id):
@@ -126,7 +198,7 @@ def create_app():
 
         # Store old URL for potential deletion
         try:
-            old_pic_url = user.profile_pic_url 
+            old_pic_url = user.profile_pic_url
 
             # Handle picture update
             if profile_pic_file and profile_pic_file.filename != '':

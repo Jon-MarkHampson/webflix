@@ -1,10 +1,52 @@
 {% extends 'layout.html' %} {% block title %}All Movies - WebFlix{% endblock %}
 {% block content %}
+<div class="container mt-4">
+  <h2>All Movies</h2>
 
-<div class="movie-grid-container">
-  {% if movies %}
-  <div class="card-grid">
-    {% for movie in movies %}
+  {# Sorting and Filtering Form #}
+  <form method="GET" action="{{ url_for('list_all_movies') }}" class="sort-wrapper mb-4">
+    <span>Sort by:</span>
+    <select name="sort_by">
+      <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Title</option>
+      <option value="release_date" {% if sort_by == 'release_date' %}selected{% endif %}>Release Year</option>
+      <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Rating (IMDb)</option>
+      {# Add other sortable fields if needed #}
+    </select>
+
+    <select name="sort_dir">
+      <option value="asc" {% if sort_dir == 'asc' %}selected{% endif %}>Ascending</option>
+      <option value="desc" {% if sort_dir == 'desc' %}selected{% endif %}>Descending</option>
+    </select>
+
+    <span>Genre:</span>
+    <select name="filter_genre">
+      <option value="all" {% if filter_genre == 'all' %}selected{% endif %}>All Genres</option>
+      {# Add common genres - consider generating this dynamically if you have many #}
+      <option value="Action" {% if filter_genre == 'Action' %}selected{% endif %}>Action</option>
+      <option value="Comedy" {% if filter_genre == 'Comedy' %}selected{% endif %}>Comedy</option>
+      <option value="Drama" {% if filter_genre == 'Drama' %}selected{% endif %}>Drama</option>
+      <option value="Horror" {% if filter_genre == 'Horror' %}selected{% endif %}>Horror</option>
+      <option value="Romance" {% if filter_genre == 'Romance' %}selected{% endif %}>Romance</option>
+      <option value="Sci-Fi" {% if filter_genre == 'Sci-Fi' %}selected{% endif %}>Sci-Fi</option>
+      <option value="Thriller" {% if filter_genre == 'Thriller' %}selected{% endif %}>Thriller</option>
+      <option value="Fantasy" {% if filter_genre == 'Fantasy' %}selected{% endif %}>Fantasy</option>
+      <option value="Documentary" {% if filter_genre == 'Documentary' %}selected{% endif %}>Documentary</option>
+      <option value="Animation" {% if filter_genre == 'Animation' %}selected{% endif %}>Animation</option>
+      <option value="Mystery" {% if filter_genre == 'Mystery' %}selected{% endif %}>Mystery</option>
+      <option value="Adventure" {% if filter_genre == 'Adventure' %}selected{% endif %}>Adventure</option>
+      <option value="Biography" {% if filter_genre == 'Biography' %}selected{% endif %}>Biography</option>
+      <option value="Crime" {% if filter_genre == 'Crime' %}selected{% endif %}>Crime</option>
+      <option value="Family" {% if filter_genre == 'Family' %}selected{% endif %}>Family</option>
+      {# Add more genres as needed #}
+    </select>
+
+    <button type="submit" class="button button-primary">Apply</button>
+  </form>
+
+  <div class="movie-grid-container">
+    {% if movies %}
+    <div class="card-grid">
+      {% for movie in movies %}
       <div class="card">
         <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
           {% if movie.poster_url %}
@@ -20,10 +62,11 @@
           {% endif %}
         </a>
       </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>No movies found matching your criteria.</p>
+    {% endif %}
   </div>
-  {% else %}
-  <p>No movies found in the database yet.</p>
-  {% endif %}
 </div>
 {% endblock %}
