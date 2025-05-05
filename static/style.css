@@ -1217,6 +1217,25 @@ a.active-nav,
   padding: 10px;
 }
 
+.home-cols {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.home-text-wrapper{
+  max-width: 800px;
+}
+
+.webflix-screenshot-wrapper img {
+  min-width: 400px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* Media Queries */
 @media (min-width: 768px) {
   /* Medium devices (tablets) */

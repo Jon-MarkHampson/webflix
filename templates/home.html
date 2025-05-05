@@ -1,50 +1,66 @@
 {% extends 'layout.html' %} {% block content %}
 <div class="container mt-4">
-  <h1>Welcome to WEBFLIX!</h1>
-  <p class="lead">Your one-stop destination for movies.</p>
-  <p>With WEBFLIX, you can:</p>
-  <ul>
-    <li>
-      Manage Users: Create profiles, upload avatars, edit details, and view all
-      users.
-    </li>
-    <li>Discover Movies: Search for movies using the OMDb database.</li>
-    <li>
-      Build Your Collection: Add movies found via search to the main database or
-      directly to your personal favorites list.
-    </li>
-    <li>
-      View Movie Details: See information like director, year, plot summary,
-      IMDb rating, poster art, and link directly to the movie's IMDb page.
-    </li>
-    <li>
-      Manage Favorites: View your personal movie list, mark movies as
-      watched/unwatched, and remove movies from your list.
-    </li>
-    <li>
-      Explore All Movies: Browse the entire collection of movies added to the
-      database.
-    </li>
-    <li>
-      Use the API: Access user and movie data programmatically (see
-      documentation below).
-    </li>
-  </ul>
-  <p>
-    Manage your movie watching experience, build a personal library, and explore
-    details about your favorite films!
-  </p>
+  <div class="home-cols">
+    <div class="home-text-wrapper">
+      <h1>Welcome to WEBFLIX!</h1>
+      <p class="lead">Your one-stop destination for movies.</p>
+      <p>With WEBFLIX, you can:</p>
+      <ul>
+        <li>
+          <strong>Manage Users:</strong> Create profiles, upload avatars, edit details, and view
+          all users.
+        </li>
+        <li><strong>Discover Movies:</strong> Search for movies using the OMDb database.</li>
+        <li>
+          <strong>Build Your Collection:</strong> Add movies found via search to the main
+          database or directly to your personal favorites list.
+        </li>
+        <li>
+          <strong>View Movie Details:</strong> See information like director, year, plot summary,
+          IMDb rating, poster art, and link directly to the movie's IMDb page.
+        </li>
+        <li>
+          <strong>Manage Favorites:</strong> View your personal movie list, mark movies as
+          watched/unwatched, and remove movies from your list.
+        </li>
+        <li>
+          <strong>Explore All Movies:</strong> Browse the entire collection of movies added to
+          the database.
+        </li>
+        <li>
+          <strong>Use the API:</strong> Access user and movie data programmatically (see
+          documentation below).
+        </li>
+      </ul>
+      <p>
+        Manage your movie watching experience, build a personal library, and
+        explore details about your favorite films!
+      </p>
+    </div>
+    <div class="webflix-screenshot-wrapper">
+      <img
+        src="https://res.cloudinary.com/apollo-view-modular/image/upload/v1746446355/webflix/Screenshot_2025-05-05_at_13.24.05_rwtxwn.png"
+        alt="Webflix Screenshot"
+        class="img-fluid rounded shadow w-50"
+      />
+    </div>
+  </div>
 
   <hr />
 
-  <h2>API Documentation</h2>
-  <p>The following API endpoints are available:</p>
-  <ul>
-    <li>
-      <strong>GET /api/users</strong>
+  <div class="api-docs mt-5">
+    <h2>API Documentation</h2>
+    <p>The following API endpoints are available:</p>
+
+    <div class="api-endpoint mb-4 p-3 border rounded">
+      <h4>
+        <span class="badge bg-success me-2">GET</span>
+        <code>/api/users</code>
+      </h4>
       <p>Returns a JSON list of all registered users.</p>
-      <p>Example response:</p>
-      <pre><code>[
+      <details>
+        <summary>Example Response</summary>
+        <pre><code class="language-json">[
   {
     "id": 1,
     "name": "Alice",
@@ -52,12 +68,18 @@
   },
   ...
 ]</code></pre>
-    </li>
-    <li>
-      <strong>GET /api/users/&lt;user_id&gt;/movies</strong>
+      </details>
+    </div>
+
+    <div class="api-endpoint mb-4 p-3 border rounded">
+      <h4>
+        <span class="badge bg-success me-2">GET</span>
+        <code>/api/users/&lt;user_id&gt;/movies</code>
+      </h4>
       <p>Returns a JSON list of favorite movies for the specified user ID.</p>
-      <p>Example response:</p>
-      <pre><code>[
+      <details>
+        <summary>Example Response</summary>
+        <pre><code class="language-json">[
   {
     "id": 101,
     "title": "Inception",
@@ -65,26 +87,34 @@
     "year": 2010,
     "omdb_id": "tt1375666",
     "poster_url": "https://...",
-    "rating": 4.5,
+    "rating": null,
     "watched": false,
     "added_on": "2025-05-05T10:00:00"
   },
   ...
 ]</code></pre>
-    </li>
-    <li>
-      <strong>POST /api/users/&lt;user_id&gt;/add-movies</strong>
+      </details>
+    </div>
+
+    <div class="api-endpoint mb-4 p-3 border rounded">
+      <h4>
+        <span class="badge bg-primary me-2">POST</span>
+        <code>/api/users/&lt;user_id&gt;/add-movies</code>
+      </h4>
       <p>
         Adds one or more movies to the specified user's favorite list. Accepts a
         plain text request body containing a comma-separated list of movie
         titles.
       </p>
-      <p>Example request:</p>
-      <pre><code>curl -X POST http://localhost:5001/api/users/1/add-movies \
+      <details>
+        <summary>Example Request (curl)</summary>
+        <pre><code class="language-bash">curl -X POST http://localhost:5001/api/users/1/add-movies \
   -H "Content-Type: text/plain" \
   --data "Inception,The Matrix,Interstellar"</code></pre>
-      <p>Example response:</p>
-      <pre><code>{
+      </details>
+      <details>
+        <summary>Example Response</summary>
+        <pre><code class="language-json">{
   "added": [
     {
       "movie_id": 102,
@@ -104,8 +134,9 @@
   ],
   "errors": []
 }</code></pre>
-    </li>
-  </ul>
+      </details>
+    </div>
+  </div>
 
   {% endblock %}
 </div>
