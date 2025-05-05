@@ -129,6 +129,8 @@
             Remove from My List
           </button>
         </form>
+        {% endif %}
+        {% endif %}
         <form
           action="{{ url_for('delete_movie', movie_id=movie.id) }}"
           method="post"
