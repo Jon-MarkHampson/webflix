@@ -1,6 +1,6 @@
 import os
 from flask import Flask, jsonify, render_template, session, redirect, url_for, flash, request
-from models import db, User, Movie, UserMovie, Genre  # Add Genre
+from models import db, User, Movie, UserMovie, Genre
 import datetime
 import cloudinary
 import cloudinary.uploader
@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import requests
 from sqlalchemy.exc import IntegrityError
 from api.api import api
-from sqlalchemy import asc, desc, func  # Add func for lower case sorting
+from sqlalchemy import asc, desc, func
 
 load_dotenv()
 
@@ -76,8 +76,6 @@ def create_app():
                 except Exception as e:
                     db.session.rollback()
                     print(f"Error adding genre '{genre_name}': {e}")
-            # else: # Optional: print message if genre already exists
-            #     print(f"Genre '{genre_name}' already exists.")
 
         if count > 0:
             print(f"✅ Added {count} new genres to the database.")
@@ -100,12 +98,12 @@ def create_app():
 
     @app.route('/all-movies')
     def list_all_movies():
-        # Get sorting/filtering parameters from query string
-        sort_by = request.args.get('sort_by', 'title')  # Default sort by title
-        sort_dir = request.args.get('sort_dir', 'asc')  # Default ascending
-        # Change filter param to expect genre ID
+        # Get sorting/filtering parameters from query string, with defaults
+        sort_by = request.args.get('sort_by', 'title')
+        sort_dir = request.args.get('sort_dir', 'asc')
+        # Change filter param to expect genre ID, default to 'all'
         filter_genre_id = request.args.get(
-            'filter_genre_id', 'all')  # Default all genres
+            'filter_genre_id', 'all')
 
         # Fetch all genres for the dropdown
         all_genres = Genre.query.order_by(Genre.name).all()
@@ -135,10 +133,6 @@ def create_app():
             query = query.order_by(direction(Movie.year))
         elif sort_by == 'rating':
             query = query.order_by(direction(Movie.imdb_rating))
-        # Sorting by genre name is more complex with many-to-many,
-        # might require joining or subqueries. Removing for now.
-        # elif sort_by == 'genre':
-        #      query = query.order_by(direction(func.lower(Movie.genre)))
 
         movies = query.all()
 
@@ -147,8 +141,8 @@ def create_app():
                                movies=movies,
                                sort_by=sort_by,
                                sort_dir=sort_dir,
-                               filter_genre_id=filter_genre_id,  # Pass ID
-                               all_genres=all_genres)  # Pass all genres for dropdown
+                               filter_genre_id=filter_genre_id,
+                               all_genres=all_genres)
 
     @app.route('/my-movies')
     def list_my_movies():
@@ -163,13 +157,13 @@ def create_app():
             session.pop('user_id', None)
             return redirect(url_for('list_users'))
 
-        # Get sorting/filtering parameters
-        sort_by = request.args.get('sort_by', 'title')  # Default sort by title
-        sort_dir = request.args.get('sort_dir', 'asc')  # Default ascending
+        # Get sorting/filtering parameters, with defaults
+        sort_by = request.args.get('sort_by', 'title')
+        sort_dir = request.args.get('sort_dir', 'asc')
         filter_watched = request.args.get(
-            'filter_watched', 'all')  # Default all
+            'filter_watched', 'all')
         filter_genre_id = request.args.get(
-            'filter_genre_id', 'all')  # Add genre filter
+            'filter_genre_id', 'all')
 
         # Fetch all genres for the dropdown
         all_genres = Genre.query.order_by(Genre.name).all()
@@ -219,8 +213,8 @@ def create_app():
                                sort_by=sort_by,
                                sort_dir=sort_dir,
                                filter_watched=filter_watched,
-                               filter_genre_id=filter_genre_id,  # Pass ID
-                               all_genres=all_genres)  # Pass all genres
+                               filter_genre_id=filter_genre_id,
+                               all_genres=all_genres)
 
     @app.route('/add-movie-search')
     def add_movie_search_page():
@@ -231,7 +225,7 @@ def create_app():
     # --- Route to handle user editing ---
     @app.route('/user/<int:user_id>/edit', methods=['GET'])
     def edit_user_form(user_id):
-        user = User.query.get_or_404(user_id)  # Get user or return 404
+        user = User.query.get_or_404(user_id)
         return render_template('edit_user.html', user=user)
 
     # --- Route to handle user update ---
@@ -336,7 +330,8 @@ def create_app():
             flash(f'User "{name}" added successfully!', 'success')
 
         except Exception as e:
-            db.session.rollback()  # Rollback in case of error during commit or upload
+            # Rollback in case of error during commit or upload
+            db.session.rollback()  
             flash(f'Error adding user: {str(e)}', 'danger')
 
         return redirect(url_for('list_users'))
@@ -346,8 +341,9 @@ def create_app():
     def delete_user(user_id):
         user = User.query.get_or_404(user_id)
         try:
-            user_name = user.name  # Get name for flash message
-            pic_url_to_delete = user.profile_pic_url  # Get URL before deleting user
+            # Get name for flash message and URL before deletion
+            user_name = user.name  
+            pic_url_to_delete = user.profile_pic_url
 
             # Delete user from DB (cascades should handle UserMovie entries)
             db.session.delete(user)
@@ -385,7 +381,8 @@ def create_app():
     def delete_movie(movie_id):
         movie = Movie.query.get_or_404(movie_id)
         try:
-            movie_title = movie.title  # Get title for flash message
+            # Get title for flash message
+            movie_title = movie.title
 
             # Deleting the movie should automatically delete related UserMovie entries
             # due to cascade='all, delete-orphan' on the relationships.
@@ -405,8 +402,8 @@ def create_app():
     @app.route('/movie/<int:movie_id>')
     def movie_detail(movie_id):
         movie = Movie.query.get_or_404(movie_id)
-        user_movie = None  # Initialize user_movie as None
-        all_genres = Genre.query.order_by(Genre.name).all()  # Fetch all genres
+        user_movie = None 
+        all_genres = Genre.query.order_by(Genre.name).all()
 
         # Check if a user is logged in
         user_id = session.get('user_id')
@@ -419,14 +416,14 @@ def create_app():
         return render_template('movie_detail.html',
                                movie=movie,
                                user_movie=user_movie,
-                               all_genres=all_genres)  # Pass genres
+                               all_genres=all_genres)
 
     # --- OMDb Movie Search Route ---
     @app.route('/search_movies')
     def search_movies():
         search_title = request.args.get('title')
         # Determine the context (add to user or global) based on who initiated the search
-        # This now comes from the dedicated search page's context
+        # This comes from the dedicated search page's context
         add_to_user_flag = request.args.get(
             'add_to_user', 'false').lower() == 'true'
 
@@ -447,7 +444,7 @@ def create_app():
             params = {'s': search_title,
                       'apikey': OMDB_API_KEY, 'type': 'movie'}
             response = requests.get("http://www.omdbapi.com/", params=params)
-            response.raise_for_status()  # Raise an exception for bad status codes
+            response.raise_for_status()
             data = response.json()
 
             if data.get('Response') == 'True':
@@ -462,14 +459,14 @@ def create_app():
 
         if error_message:
             flash(f"OMDb Search Error: {error_message}", 'danger')
-            # Optionally redirect back to search page on error, or render results page with error
-            # return redirect(url_for('add_movie_search_page'))
+            # Redirect back to the search page
+            return redirect(url_for('add_movie_search_page'))
 
         # Render the results page, passing the context flag
         return render_template('search_results.html',
                                results=search_results,
                                search_title=search_title,
-                               add_to_user=add_to_user_flag)  # Pass the flag here
+                               add_to_user=add_to_user_flag)
 
     # --- Add Movie Route ---
     # Allow POST requests from the form
@@ -508,8 +505,9 @@ def create_app():
                 return redirect(failure_redirect_url)
 
             try:
+                # Get short plot
                 params = {'i': imdb_id, 'apikey': OMDB_API_KEY,
-                          'plot': 'short'}  # Get short plot
+                          'plot': 'short'}  
                 response = requests.get(
                     "http://www.omdbapi.com/", params=params)
                 response.raise_for_status()
@@ -644,7 +642,8 @@ def create_app():
             user_id=user_id, movie_id=movie_id).first()
         if user_movie:
             try:
-                user_movie.watched = not user_movie.watched  # Toggle the status
+                # Toggle the status
+                user_movie.watched = not user_movie.watched  
                 db.session.commit()
                 status = "watched" if user_movie.watched else "not watched"
                 flash(
@@ -654,7 +653,7 @@ def create_app():
                 flash(f'Error updating watched status: {str(e)}', 'danger')
         else:
             flash('Movie not found in your list.',
-                  'warning')  # Corrected indentation
+                  'warning')
 
         return redirect(url_for('list_my_movies', user_id=user_id))
 

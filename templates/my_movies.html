@@ -9,7 +9,6 @@
       <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Title</option>
       <option value="release_date" {% if sort_by == 'release_date' %}selected{% endif %}>Release Year</option>
       <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Rating (IMDb)</option>
-      {# Add other sortable fields if needed #}
     </select>
 
     <select name="sort_dir">
@@ -24,7 +23,7 @@
       <option value="unwatched" {% if filter_watched == 'unwatched' %}selected{% endif %}>Unwatched</option>
     </select>
 
-    {# Add Genre Filter Dropdown #}
+    {# Genre Filter Dropdown #}
     <span>Genre:</span>
     <select name="filter_genre_id">
       <option value="all" {% if filter_genre_id == 'all' %}selected{% endif %}>All Genres</option>
@@ -39,7 +38,6 @@
   <div class="movie-grid-container">
     {% if movies %}
     <div class="card-grid">
-      {# Loop through UserMovie association objects #}
       {% for user_movie in movies %}
       {% set movie = user_movie.movie %} {# Get the actual Movie object #}
 
@@ -57,10 +55,6 @@
           </div>
           {% endif %}
         </a>
-        {# Optional: Add movie title or other info below the poster if desired #}
-        {# <div class="card-body p-2">
-          <h5 class="card-title fs-6 mb-0">{{ movie.title }}</h5>
-        </div> #}
       </div>
       {% endfor %}
     </div>

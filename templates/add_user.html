@@ -1,5 +1,5 @@
-{% extends 'layout.html' %} {% block title %}Add New User - WebFlix{% endblock
-%} {% block content %}
+{% extends 'layout.html' %} {% block title %}Add New User - WebFlix{% endblock%}
+{% block content %}
 <div class="container mt-4">
   <h2>Select User</h2>
   <p class="lead">
@@ -7,7 +7,6 @@
   </p>
   <h1>Add New User</h1>
 
-  <!-- Add New User Form -->
   <div class="add-user-form">
     <form
       action="{{ url_for('add_user') }}"
@@ -42,7 +41,6 @@
       </div>
     </form>
   </div>
-  <!-- End Add New User Form -->
 
   <hr />
 

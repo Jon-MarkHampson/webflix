@@ -10,7 +10,6 @@
       <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Title</option>
       <option value="release_date" {% if sort_by == 'release_date' %}selected{% endif %}>Release Year</option>
       <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Rating (IMDb)</option>
-      {# Add other sortable fields if needed #}
     </select>
 
     <select name="sort_dir">
@@ -19,7 +18,6 @@
     </select>
 
     <span>Genre:</span>
-    {# Change name to filter_genre_id and populate with Genre objects #}
     <select name="filter_genre_id">
       <option value="all" {% if filter_genre_id == 'all' %}selected{% endif %}>All Genres</option>
       {% for genre in all_genres %}

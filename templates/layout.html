@@ -14,7 +14,6 @@
       <h1>
         <a href="{{ url_for('home') }}">WEBFLIX</a>
       </h1>
-      {# Made title a link to home #}
       <nav>
         {% if current_user %}
         <a
@@ -50,12 +49,8 @@
         {% endif %}
       </nav>
       <div class="user-info">
-        {# Added div to group user info/login #} {% if current_user %} {# Wrap
-        avatar and name in a link to the user list #}
-        <a
-          href="{{ url_for('list_users') }}"
-          class="user-link"
-        >
+        {% if current_user %}
+        <a href="{{ url_for('list_users') }}" class="user-link">
           {% if current_user.profile_pic_url %}
           <img
             src="{{ current_user.profile_pic_url }}"

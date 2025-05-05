@@ -1,7 +1,5 @@
-{# /Users/apollo_view/Development/Masterschool/Visual Studio Code
-Projects/MoviWeb/templates/movie_detail.html #} {% extends 'layout.html' %} {%
-block title %} {{ movie.title }} - Movie Details {% endblock %} {% block content
-%}
+{% extends 'layout.html' %} {% block title %} {{ movie.title }} - Movie Details
+{% endblock %} {% block content %}
 <div class="container mt-4">
   <div class="row">
     <div class="movie-detail-poster-wrapper">
@@ -100,9 +98,8 @@ block title %} {{ movie.title }} - Movie Details {% endblock %} {% block content
       </form>
 
       <div class="movie-detail-button-wrapper mt-4">
-        {% if current_user %} {# The user_movie object is now passed directly
-        from the route #} {% if user_movie %} {# Watched Toggle Button - only
-        show if the movie is in the user's list #}
+        {% if current_user %} {% if user_movie %} {# Watched Toggle Button -
+        only show if the movie is in the user's list #}
         <form
           action="{{ url_for('toggle_watched', user_id=current_user.id, movie_id=movie.id) }}"
           method="post"
@@ -132,12 +129,6 @@ block title %} {{ movie.title }} - Movie Details {% endblock %} {% block content
             Remove from My List
           </button>
         </form>
-        {% else %} {# Optionally, add a button to add the movie to the list if
-        it's not there #} {# This would require a new route or modifying the
-        add_movie route #} {#
-        <p><a href="#" class="button button-success">Add to My List</a></p>
-        #} {% endif %} {% endif %} {# "Delete from Database" button - this could
-        be restricted to admins if needed #}
         <form
           action="{{ url_for('delete_movie', movie_id=movie.id) }}"
           method="post"
@@ -164,13 +155,6 @@ block title %} {{ movie.title }} - Movie Details {% endblock %} {% block content
         const selectedOptions = Array.from(selectElement.selectedOptions);
         if (selectedOptions.length > 4) {
           alert("You can select a maximum of 4 genres.");
-          // Deselect the last selected item that caused the overflow
-          // This requires tracking the previous state or simply deselecting the last one in the current selection
-          // For simplicity, we'll just alert. A more robust solution might involve preventing the selection.
-          // Find the last selected option and deselect it (might not be the one just clicked)
-          // A better UX might disable options once 4 are selected.
-          // Find the option that was just added to exceed the limit and deselect it.
-          // This simple version just alerts and relies on the backend validation.
         }
       });
     }
