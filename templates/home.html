@@ -2,7 +2,110 @@
 <div class="container mt-4">
   <h1>Welcome to WEBFLIX!</h1>
   <p class="lead">Your one-stop destination for movies.</p>
-  <p>Explore our collection and create your own personal database, upload a picture or avatar to your profile, add movies to your list and track which movies you have watched!</p>
+  <p>With WEBFLIX, you can:</p>
+  <ul>
+    <li>
+      Manage Users: Create profiles, upload avatars, edit details, and view all
+      users.
+    </li>
+    <li>Discover Movies: Search for movies using the OMDb database.</li>
+    <li>
+      Build Your Collection: Add movies found via search to the main database or
+      directly to your personal favorites list.
+    </li>
+    <li>
+      View Movie Details: See information like director, year, plot summary,
+      IMDb rating, poster art, and link directly to the movie's IMDb page.
+    </li>
+    <li>
+      Manage Favorites: View your personal movie list, mark movies as
+      watched/unwatched, and remove movies from your list.
+    </li>
+    <li>
+      Explore All Movies: Browse the entire collection of movies added to the
+      database.
+    </li>
+    <li>
+      Use the API: Access user and movie data programmatically (see
+      documentation below).
+    </li>
+  </ul>
+  <p>
+    Manage your movie watching experience, build a personal library, and explore
+    details about your favorite films!
+  </p>
+
+  <hr />
+
+  <h2>API Documentation</h2>
+  <p>The following API endpoints are available:</p>
+  <ul>
+    <li>
+      <strong>GET /api/users</strong>
+      <p>Returns a JSON list of all registered users.</p>
+      <p>Example response:</p>
+      <pre><code>[
+  {
+    "id": 1,
+    "name": "Alice",
+    "profile_pic_url": "https://example.com/alice.jpg"
+  },
+  ...
+]</code></pre>
+    </li>
+    <li>
+      <strong>GET /api/users/&lt;user_id&gt;/movies</strong>
+      <p>Returns a JSON list of favorite movies for the specified user ID.</p>
+      <p>Example response:</p>
+      <pre><code>[
+  {
+    "id": 101,
+    "title": "Inception",
+    "director": "Christopher Nolan",
+    "year": 2010,
+    "omdb_id": "tt1375666",
+    "poster_url": "https://...",
+    "rating": 4.5,
+    "watched": false,
+    "added_on": "2025-05-05T10:00:00"
+  },
+  ...
+]</code></pre>
+    </li>
+    <li>
+      <strong>POST /api/users/&lt;user_id&gt;/add-movies</strong>
+      <p>
+        Adds one or more movies to the specified user's favorite list. Accepts a
+        plain text request body containing a comma-separated list of movie
+        titles.
+      </p>
+      <p>Example request:</p>
+      <pre><code>curl -X POST http://localhost:5001/api/users/1/add-movies \
+  -H "Content-Type: text/plain" \
+  --data "Inception,The Matrix,Interstellar"</code></pre>
+      <p>Example response:</p>
+      <pre><code>{
+  "added": [
+    {
+      "movie_id": 102,
+      "imdb_id": "tt0133093",
+      "title": "The Matrix"
+    },
+    {
+      "movie_id": 101,
+      "imdb_id": "tt1375666",
+      "title": "Inception"
+    },
+    {
+      "movie_id": 103,
+      "imdb_id": "tt0816692",
+      "title": "Interstellar"
+    }
+  ],
+  "errors": []
+}</code></pre>
+    </li>
+  </ul>
 
   {% endblock %}
 </div>

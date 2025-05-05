@@ -1,5 +1,9 @@
 {% extends 'layout.html' %} {% block title %}{{ user.name }}'s Movies{% endblock %} {% block content %}
+
 <div class="movie-grid-container">
+  <div class="sort-wrapper">
+    
+  </div>
   {% if movies %}
   <div class="card-grid">
     {# Loop through UserMovie association objects #}
