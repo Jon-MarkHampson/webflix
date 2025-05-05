@@ -25,10 +25,6 @@ block content %}
             {% endif %}
           </div>
           <span class="user-list-name">{{ user.name }}</span>
-
-          {% if current_user and current_user.id == user.id %}
-          <span class="active-badge">Active</span>
-          {% endif %}
         </div>
       </a>
       <div class="user-actions">

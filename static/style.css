@@ -37,7 +37,6 @@
   --color-white: #fff;
 
   /* Special colors */
-  --color-active-badge: #2ecc71;
   --color-brand: rgb(255, 0, 0);
 
   /* Border colors */
@@ -156,6 +155,7 @@ header .header-avatar {
 }
 
 header .user-name {
+  display: none;
   margin-right: 15px;
 }
 
@@ -837,19 +837,6 @@ button {
   justify-content: center;
 }
 
-.active-badge {
-  display: inline-block;
-  background-color: var(--color-active-badge);
-  color: var(--color-white);
-  font-size: 0.7em;
-  padding: 2px 8px;
-  border-radius: 10px;
-  margin-left: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: bold;
-}
-
 .user-actions {
   white-space: nowrap; /* Prevent buttons from wrapping */
   margin-right: 15px;
@@ -1293,6 +1280,10 @@ a.active-nav,
     justify-content: center;;
   }
 
+  header .user-name {
+    display: block;
+  }
+  
   .card-grid {
     grid-template-columns: repeat(3, 1fr); /* 3 columns */
   }
@@ -1300,6 +1291,10 @@ a.active-nav,
 
 @media (min-width: 992px) {
   /* Large devices (desktops) */
+  header .user-name {
+    display: block;
+  } 
+
   .card-grid {
     grid-template-columns: repeat(6, 1fr); /* 6 columns */
   }
@@ -1307,6 +1302,10 @@ a.active-nav,
 
 @media (min-width: 1400px) {
   /* Extra large devices (large desktops) */
+  header .user-name {
+    display: block;
+  }
+  
   .card-grid {
     grid-template-columns: repeat(9, 1fr); /* 9 columns */
   }
